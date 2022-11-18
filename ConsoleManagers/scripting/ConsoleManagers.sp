@@ -18,7 +18,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "3.0xalpha_01",
+    version     = "3.0alpha",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -33,6 +33,8 @@ char importConsole[MAXPHRASE][256];
 
 public void OnPluginStart()
 {
+    TextHudParams_OnPluginStart();
+
     HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
     HookEvent("round_end", OnRoundEnd, EventHookMode_PostNoCopy);
 }

@@ -2,9 +2,40 @@
 
 #include <adt_array>
 
+ConVar textHudFirstChannel;
+ConVar textHudSecondChannel;
+ConVar textHudThirdChannel;
+
 ArrayList       replaceableChannel;
 static bool     isAvailableChannel[3]   = {true, ...};
 static int      useChannel[MAXPHRASE];
+static int      hudChannelGroup[3] = {3, 4, 5};
+
+public void TextHudParams_OnPluginStart()
+{
+    textHudFirstChannel = CreateConVar("sm_hud_firstchannel", "3", "Change HUD Channel/Group Dynamic channel for the 1st game_text paragraph.", _, true, 0.0, true, 5.0);
+    textHudSecondChannel = CreateConVar("sm_hud_secondchannel", "4", "Change HUD Channel/Group Dynamic channel for the 2nd game_text paragraph.", _, true, 0.0, true, 5.0);
+    textHudThirdChannel = CreateConVar("sm_hud_thirdchannel", "5", "Change HUD Channel/Group Dynamic channel for the 3rd game_text paragraph.", _, true, 0.0, true, 5.0);
+
+    textHudFirstChannel.AddChangeHook(DetectConVarChange);
+    textHudSecondChannel.AddChangeHook(DetectConVarChange);
+    textHudThirdChannel.AddChangeHook(DetectConVarChange);
+
+    ReadConfigTextHudChannels();
+    AutoExecConfig(true, "ConsoleManagers");
+}
+
+void DetectConVarChange(ConVar convar, const char[] oldValue, const char[] newValue)
+{
+    if(convar == textHudFirstChannel || convar == textHudSecondChannel || convar == textHudThirdChannel) ReadConfigTextHudChannels();
+}
+
+stock void ReadConfigTextHudChannels()
+{
+    hudChannelGroup[0] = textHudFirstChannel.IntValue;
+    hudChannelGroup[1] = textHudSecondChannel.IntValue;
+    hudChannelGroup[2] = textHudThirdChannel.IntValue;
+}
 
 stock void ImportTextHudParameters(const char[] console, int phrase)
 {
@@ -74,9 +105,9 @@ stock void ExportTextHudParameters(const char[] console, int phrase, int color[3
         if(IsValidClient(i))
         {
             #if defined DYNAMIC_CHANNELS
-                ShowHudText(i, GetDynamicChannel(channel), console);
+                ShowHudText(i, GetDynamicChannel(hudChannelGroup[channel]), console);
             #else
-                ShowHudText(i, channel, console);
+                ShowHudText(i, hudChannelGroup[channel], console);
             #endif
         }
     }

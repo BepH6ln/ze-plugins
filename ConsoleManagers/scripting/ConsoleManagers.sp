@@ -18,7 +18,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "2.0xalpha_02",
+    version     = "2.0alpha",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -48,7 +48,7 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
                 strcopy(importConsole[i], sizeof(importConsole[]), sArgs);
                 ReadConfigsFile(importConsole[i], i);
 
-                CreateNewSyntaxConsole(importConsole[i]);
+                CreateNewSyntaxConsole(importConsole[i], i);
                 break;
             }
         }
@@ -56,10 +56,20 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
     return Plugin_Handled;
 }
 
-void CreateNewSyntaxConsole(const char[] console)
+void CreateNewSyntaxConsole(const char[] console, int phrase)
 {
     char exportConsole[280];
-    Format(exportConsole, sizeof(exportConsole), "%s%s", "{lime}", console);
+
+    if(configsDetail[phrase].trigtimer > 0)
+    {
+        int timeTriggerEnds = ExportTimeWhenTrigEnds(phrase);
+        float tempMinutes   = timeTriggerEnds / 60.0;
+        int minutes         = RoundToFloor(tempMinutes);
+        int seconds         = timeTriggerEnds - minutes * 60;
+
+        Format(exportConsole, sizeof(exportConsole), "%s%s %s- @ %i:%s%i", "{lime}", console, "{red}", minutes, (seconds < 10 ? "0":""), seconds);
+    }
+    else Format(exportConsole, sizeof(exportConsole), "%s%s", "{lime}", console);
 
     for(int i = 0; i <= MaxClients; i++)
     {

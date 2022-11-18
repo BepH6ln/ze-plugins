@@ -18,13 +18,15 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "6.1xalpha_01",
+    version     = "6.1xalpha_02",
     url         = "https://github.com/BepH6ln"
 };
 
 char importConsole[MAXPHRASE][256];
 
 #include <consmanagers/functions>
+#include <consmanagers/clientcookies>
+#include <consmanagers/clientcommands>
 #include <consmanagers/applyconfigs>
 #include <consmanagers/timemanager>
 #include <consmanagers/timercountdown>
@@ -32,8 +34,6 @@ char importConsole[MAXPHRASE][256];
 #include <consmanagers/colorconverter>
 #include <consmanagers/centerhudparams>
 #include <consmanagers/instructorhints>
-#include <consmanagers/clientcookies>
-#include <consmanagers/clientcommands>
 
 public void OnPluginStart()
 {

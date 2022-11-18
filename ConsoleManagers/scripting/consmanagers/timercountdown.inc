@@ -22,6 +22,7 @@ Action ConvertConsoleByTimer(Handle timer, int phrase)
         }
 
         if(configsDetail[phrase].isEnabledTextHud) CreateTimer(2.0, RefreshChannelStatusEnds, phrase);
+        if(configsDetail[phrase].isEnabledCenterHud) CreateTimer(1.0, RefreshCenterHudMessage, phrase);
         return Plugin_Handled;
     }
 
@@ -38,6 +39,12 @@ Action ConvertConsoleByTimer(Handle timer, int phrase)
     {
         if(timerCountdown[phrase][1] <= 5) ExportTextHudParameters(console, phrase, {255, 0, 128}, true);
         else ExportTextHudParameters(console, phrase, configsDetail[phrase].RGBsColor, true);
+    }
+
+    if(configsDetail[phrase].isEnabledCenterHud)
+    {
+        if(timerCountdown[phrase][1] <= 5) ConvertToHTMLSyntax(console, phrase, {255, 0, 128}, true);
+        else ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, true);
     }
     return Plugin_Handled;
 }

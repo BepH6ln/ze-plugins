@@ -18,7 +18,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "2.1alpha",
+    version     = "2.2alpha",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -27,6 +27,7 @@ char importConsole[MAXPHRASE][256];
 #include <consmanagers/functions>
 #include <consmanagers/applyconfigs>
 #include <consmanagers/timemanager>
+#include <consmanagers/colorconverter>
 
 public void OnPluginStart()
 {

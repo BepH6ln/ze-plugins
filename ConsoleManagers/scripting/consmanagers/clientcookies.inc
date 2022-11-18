@@ -1,12 +1,10 @@
 #define CONSOLEMANAGERS_CLIENTCOOKIES
 
-#include <clientprefs>
-
-Handle  selectLanguage,
-        toggleDisplayStyle,
-        textHudPosition,
-        colorSyncEnabled,
-        tracksRGBsColor;
+Handle  selectLanguage          = null,
+        toggleDisplayStyle      = null,
+        textHudPosition         = null,
+        colorSyncEnabled        = null,
+        tracksRGBsColor         = null;
 classClientSetting clientSettings[MAXPLAYERS + 1];
 
 public void ClientCookies_OnPluginStart()
@@ -39,7 +37,7 @@ public void OnClientCookiesCached(int client)
     if(!StrEqual(cookieValue, ""))
     {
         char hudBuffer[2][16];
-        ExplodeString(cookieValue, " ", hudBuffer, 2, 16);
+        ExplodeString(cookieValue, "/", hudBuffer, 2, 16);
 
         float assignedValue = StringToFloat(hudBuffer[0]);
         if((assignedValue >= 0.0 && assignedValue <= 1.0) || assignedValue == -1.0) clientSettings[client].hudPosition[0] = assignedValue;
@@ -63,7 +61,7 @@ public void OnClientCookiesCached(int client)
     if(!StrEqual(cookieValue, ""))
     {
         char colorBuffer[3][6]
-        ExplodeString(cookieValue, " ", colorBuffer, 3, 6);
+        ExplodeString(cookieValue, "/", colorBuffer, 3, 6);
 
         int assignedValue = StringToInt(colorBuffer[0])
         if(assignedValue >= 0 && assignedValue <= 255) clientSettings[client].RGBsColor[0] = assignedValue;

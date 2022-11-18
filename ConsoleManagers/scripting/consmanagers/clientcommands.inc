@@ -184,7 +184,7 @@ stock bool ClientCookieHudPos(int client, int iteminfo)
             case 8: clientSettings[client].hudPosition[1] = oldHudPosY + 0.01;
         }
 
-        FormatEx(newHudPosValue, sizeof(newHudPosValue), "%f %f", clientSettings[client].hudPosition[0], clientSettings[client].hudPosition[1]);
+        Format(newHudPosValue, sizeof(newHudPosValue), "%f/%f", clientSettings[client].hudPosition[0], clientSettings[client].hudPosition[1]);
         SetClientCookie(client, textHudPosition, newHudPosValue);
         OpenMenuChangeHudPos(client);
         return true;

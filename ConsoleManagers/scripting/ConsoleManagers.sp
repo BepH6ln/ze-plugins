@@ -18,7 +18,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "2.0alpha",
+    version     = "2.1alpha",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -26,15 +26,43 @@ char importConsole[MAXPHRASE][256];
 
 #include <consmanagers/functions>
 #include <consmanagers/applyconfigs>
+#include <consmanagers/timemanager>
 
 public void OnPluginStart()
 {
     HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
+    HookEvent("round_end", OnRoundEnd, EventHookMode_PostNoCopy);
 }
 
 void OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
     LoadConfigsFile();
+    SaveTimeWhenRoundStart();
+}
+
+void OnRoundEnd(Event event, const char[] name, bool dontBroadcast)
+{
+    InitializePlugin();
+}
+
+public void OnMapEnd()
+{
+    InitializePlugin();
+}
+
+public void OnPluginEnd()
+{
+    InitializePlugin();
+}
+
+void InitializePlugin()
+{
+    if(kvsConsole) delete kvsConsole;
+
+    for(int i = 0; i < MAXPHRASE; i++)
+    {
+        if(!StrEqual(importConsole[i], "")) importConsole[i][0] = '\0';
+    }
 }
 
 public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs)

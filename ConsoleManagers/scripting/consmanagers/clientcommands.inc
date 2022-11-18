@@ -14,8 +14,8 @@ Action OpenConsManagersClientMenu(int client, int args)
     {
         case 0: clientMenu.AddItem("LANGUAGE", "Console Language: [English]");
         case 1: clientMenu.AddItem("LANGUAGE", "コンソール言語：[日本語]");
-        case 2: clientMenu.AddItem("LANGUAGE", "您的地图消息语言：[简体中文]");
-        case 3: clientMenu.AddItem("LANGUAGE", "您的地圖消息語言：[繁體中文]");
+        case 2: clientMenu.AddItem("LANGUAGE", "地图消息语言：[简体中文]");
+        case 3: clientMenu.AddItem("LANGUAGE", "地圖消息語言：[繁體中文]");
         case 4: clientMenu.AddItem("LANGUAGE", "지도메시지의언어：[한국어]");
     }
 
@@ -27,9 +27,9 @@ Action OpenConsManagersClientMenu(int client, int args)
         case 0: clientMenu.AddItem("HUDSTYLES", "Hud Style: [OFF]");
         case 1:
         {
-            clientMenu.AddItem("HUDSTYLES", "Hud Style: [Game Text]");
+            clientMenu.AddItem("HUDSTYLES", "Hud Style: [GameText]");
 
-            FormatEx(tempBuffer, sizeof(tempBuffer), "Hud Position: [%3.f %3.f]", clientSettings[client].hudPosition[0], clientSettings[client].hudPosition[1]);
+            FormatEx(tempBuffer, sizeof(tempBuffer), "Hud Position: [%.3f %.3f]", clientSettings[client].hudPosition[0], clientSettings[client].hudPosition[1]);
             clientMenu.AddItem("HUDPOSITION", tempBuffer);
         }
         case 2:
@@ -38,7 +38,7 @@ Action OpenConsManagersClientMenu(int client, int args)
             if(!clientSettings[client].isEnabledColorSync) clientMenu.AddItem("COLORSYNCS", "Color Sync: [Disable]");
             else
             {
-                clientMenu.AddItem("COLORSYNC", "Color Sync: [Enable]");
+                clientMenu.AddItem("COLORSYNCS", "Color Sync: [Enable]");
 
                 FormatEx(tempBuffer, sizeof(tempBuffer), "Timer Color: [%i %i %i]", clientSettings[client].RGBsColor[0], clientSettings[client].RGBsColor[1], clientSettings[client].RGBsColor[2]);
                 clientMenu.AddItem("TIMERCOLOR", tempBuffer);
@@ -62,7 +62,7 @@ int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
             if(StrEqual(menuItem, "LANGUAGE")) ClientCookieLanguage(client, clientSettings[client].language < 4 ? clientSettings[client].language + 1 : 0);
             else if(StrEqual(menuItem, "HUDSTYLES")) ClientCookieHudStyles(client, clientSettings[client].displayStyle < 2 ? clientSettings[client].displayStyle + 1 : 0);
             // else if(StrEqual(menuItem, "HUDPOSITION")) OpenMenuChangeHudPos(client);
-            else if(StrEqual(menuItem, "COLORSYNC")) ClientCookieColorSync(client, clientSettings[client].isEnabledColorSync ? false : true);
+            else if(StrEqual(menuItem, "COLORSYNCS")) ClientCookieColorSync(client, clientSettings[client].isEnabledColorSync ? false : true);
             // else if(StrEqual(menuItem, "TIMERCOLOR")) OpenMenuChangeTimerColor(client);
         }
         case MenuAction_End:
@@ -87,10 +87,10 @@ stock bool ClientCookieLanguage(int client, int language)
         switch(language)
         {
             case 0: CPrintToChat(client, "%s[ConsManagers] %sYou changed the console language to [English].", "{lime}", "{gold}");
-            case 1: CPrintToChat(client, "%s[ConsManagers] %sコンソールの言語を [日本語] に変更しました．", "{lime}", "{gold}");
-            case 2: CPrintToChat(client, "%s[ConsManagers] %s", "{lime}", "{gold}");
-            case 3: CPrintToChat(client, "%s[ConsManagers] %s", "{lime}", "{gold}");
-            case 4: CPrintToChat(client, "%s[ConsManagers] %s", "{lime}", "{gold}");
+            case 1: CPrintToChat(client, "%s[ConsManagers] %sコンソールの言語を [日本語] に変更しました.", "{lime}", "{gold}");
+            case 2: CPrintToChat(client, "%s[ConsManagers] %s您的地图消息语言已切换为 [简体中文].", "{lime}", "{gold}");
+            case 3: CPrintToChat(client, "%s[ConsManagers] %s您的地圖消息語言已切換為 [繁體中文].", "{lime}", "{gold}");
+            case 4: CPrintToChat(client, "%s[ConsManagers] %s맵메시지의언어가 [한국어] 로변경되었습니다. ", "{lime}", "{gold}");
         }
         return true;
     }
@@ -111,7 +111,7 @@ stock bool ClientCookieHudStyles(int client, int hudstyle)
         switch(hudstyle)
         {
             case 0: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: %s[OFF].", "{lime}", "{gold}", "{red}");
-            case 1: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [Game Text].", "{lime}", "{gold}");
+            case 1: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [GameText].", "{lime}", "{gold}");
             case 2: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [CenterHud].", "{lime}", "{gold}");
         }
         return true;

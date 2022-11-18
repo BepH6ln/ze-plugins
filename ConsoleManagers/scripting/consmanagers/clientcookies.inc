@@ -2,11 +2,11 @@
 
 #include <clientprefs>
 
-Handle  selectLanguage      = null,
-        toggleDisplayStyle  = null,
-        textHudPosition     = null,
-        colorSyncEnabled    = null,
-        tracksRGBsColor     = null;
+Handle  selectLanguage,
+        toggleDisplayStyle,
+        textHudPosition,
+        colorSyncEnabled,
+        tracksRGBsColor;
 classClientSetting clientSettings[MAXPLAYERS + 1];
 
 public void ClientCookies_OnPluginStart()

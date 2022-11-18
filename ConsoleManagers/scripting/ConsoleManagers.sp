@@ -18,16 +18,16 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "6.1xalpha_02",
+    version     = "6.1xalpha_03",
     url         = "https://github.com/BepH6ln"
 };
 
 char importConsole[MAXPHRASE][256];
 
 #include <consmanagers/functions>
+#include <consmanagers/applyconfigs>
 #include <consmanagers/clientcookies>
 #include <consmanagers/clientcommands>
-#include <consmanagers/applyconfigs>
 #include <consmanagers/timemanager>
 #include <consmanagers/timercountdown>
 #include <consmanagers/texthudparams>

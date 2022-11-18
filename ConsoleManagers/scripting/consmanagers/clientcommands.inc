@@ -50,6 +50,25 @@ Action OpenConsManagersClientMenu(int client, int args)
     return Plugin_Handled;
 }
 
+Action OpenMenuChangeHudPos(int client)
+{
+    Menu hudposMenu = new Menu(hudposMenuHandle, MENU_ACTIONS_ALL);
+    hudposMenu.SetTitle("ConsoleManagers Settings");
+
+    hudposMenu.AddItem("MOVERIGHT", "Move to right");
+    hudposMenu.AddItem("MOVELEFT", "Move to left");
+    hudposMenu.AddItem("MOVEUP", "Move to up");
+    hudposMenu.AddItem("MOVEDOWN", "Move to down");
+    hudposMenu.AddItem("MOVERIGHTBIT", "Move to right a bit");
+    hudposMenu.AddItem("MOVELEFTBIT", "Move to left a bit");
+    hudposMenu.AddItem("MOVEUPBIT", "Move to up a bit");
+    hudposMenu.AddItem("MOVEDOWNBIT", "Move to down a bit");
+    hudposMenu.ExitBackButton = true;
+
+    hudposMenu.Display(client, MENU_TIME_FOREVER);
+    return Plugin_Handled;
+}
+
 int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
 {
     switch(action)
@@ -61,13 +80,39 @@ int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
 
             if(StrEqual(menuItem, "LANGUAGE")) ClientCookieLanguage(client, clientSettings[client].language < 4 ? clientSettings[client].language + 1 : 0);
             else if(StrEqual(menuItem, "HUDSTYLES")) ClientCookieHudStyles(client, clientSettings[client].displayStyle < 2 ? clientSettings[client].displayStyle + 1 : 0);
-            // else if(StrEqual(menuItem, "HUDPOSITION")) OpenMenuChangeHudPos(client);
+            else if(StrEqual(menuItem, "HUDPOSITION")) OpenMenuChangeHudPos(client);
             else if(StrEqual(menuItem, "COLORSYNCS")) ClientCookieColorSync(client, clientSettings[client].isEnabledColorSync ? false : true);
             // else if(StrEqual(menuItem, "TIMERCOLOR")) OpenMenuChangeTimerColor(client);
         }
         case MenuAction_End:
         {
             delete menu;
+        }
+    }
+    return 0;
+}
+
+int hudposMenuHandle(Menu menu, MenuAction action, int client, int item)
+{
+    switch(action)
+    {
+        case MenuAction_Select:
+        {
+            char menuItem[16];
+            GetMenuItem(menu, item, menuItem, sizeof(menuItem));
+
+            if(StrEqual(menuItem, "MOVERIGHT")) ClientCookieHudPos(client, 1);
+            else if(StrEqual(menuItem, "MOVELEFT")) ClientCookieHudPos(client, 2);
+            else if(StrEqual(menuItem, "MOVEUP")) ClientCookieHudPos(client, 3);
+            else if(StrEqual(menuItem, "MOVEDOWN")) ClientCookieHudPos(client, 4);
+            else if(StrEqual(menuItem, "MOVERIGHTBIT")) ClientCookieHudPos(client, 5);
+            else if(StrEqual(menuItem, "MOVELEFTBIT")) ClientCookieHudPos(client, 6);
+            else if(StrEqual(menuItem, "MOVEUPBIT")) ClientCookieHudPos(client, 7);
+            else if(StrEqual(menuItem, "MOVEDOWNBIT")) ClientCookieHudPos(client, 8);
+        }
+        case MenuAction_Cancel:
+        {
+            OpenConsManagersClientMenu(client, 1);
         }
     }
     return 0;
@@ -114,6 +159,34 @@ stock bool ClientCookieHudStyles(int client, int hudstyle)
             case 1: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [GameText].", "{lime}", "{gold}");
             case 2: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [CenterHud].", "{lime}", "{gold}");
         }
+        return true;
+    }
+    return false;
+}
+
+stock bool ClientCookieHudPos(int client, int iteminfo)
+{
+    if(IsValidClient(client))
+    {
+        char newHudPosValue[32];
+        float oldHudPosX = clientSettings[client].hudPosition[0];
+        float oldHudPosY = clientSettings[client].hudPosition[1];
+
+        switch(iteminfo)
+        {
+            case 1: clientSettings[client].hudPosition[0] = oldHudPosX + 0.05;
+            case 2: clientSettings[client].hudPosition[0] = oldHudPosX - 0.05;
+            case 3: clientSettings[client].hudPosition[1] = oldHudPosY - 0.05;
+            case 4: clientSettings[client].hudPosition[1] = oldHudPosY + 0.05;
+            case 5: clientSettings[client].hudPosition[0] = oldHudPosX + 0.01;
+            case 6: clientSettings[client].hudPosition[0] = oldHudPosX - 0.01;
+            case 7: clientSettings[client].hudPosition[1] = oldHudPosY - 0.01;
+            case 8: clientSettings[client].hudPosition[1] = oldHudPosY + 0.01;
+        }
+
+        FormatEx(newHudPosValue, sizeof(newHudPosValue), "%f %f", clientSettings[client].hudPosition[0], clientSettings[client].hudPosition[1]);
+        SetClientCookie(client, textHudPosition, newHudPosValue);
+        OpenMenuChangeHudPos(client);
         return true;
     }
     return false;

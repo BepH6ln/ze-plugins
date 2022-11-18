@@ -46,6 +46,13 @@ Action ConvertConsoleByTimer(Handle timer, int phrase)
         if(timerCountdown[phrase][1] <= 5) ConvertToHTMLSyntax(console, phrase, {255, 0, 128}, true);
         else ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, true);
     }
+
+    if(configsDetail[phrase].isEnabledHintHud && configsDetail[phrase].isEnableHintCountdown)
+    {
+        if(timerCountdown[phrase][1] <= 5) GenerateInstructorHint(console, phrase, {255, 0, 128}, true);
+        else GenerateInstructorHint(console, phrase, configsDetail[phrase].RGBsColor, false);
+    }
+
     return Plugin_Handled;
 }
 

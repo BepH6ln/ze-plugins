@@ -1,4 +1,4 @@
-#define CONSOLEMANAGERS_TIMERMANAGERS
+#define CONSOLEMANAGERS_TIMERMANAGER
 
 static int timeRoundStart;
 

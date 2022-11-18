@@ -18,7 +18,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "4.0alpha",
+    version     = "5.1alpha",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -31,6 +31,7 @@ char importConsole[MAXPHRASE][256];
 #include <consmanagers/texthudparams>
 #include <consmanagers/colorconverter>
 #include <consmanagers/centerhudparams>
+#include <consmanagers/instructorhints>
 
 public void OnPluginStart()
 {
@@ -88,6 +89,7 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
                 if(!StrEqual(importConsole[i], "") && configsDetail[i].trigtimer > 0 && configsDetail[i].isEnabledCountdown) SaveConsoleParameters(i);
                 ImportTextHudParameters(importConsole[i], i);
                 ImportCenterHudParameters(importConsole[i], i);
+                GenerateInstructorHint(importConsole[i], i, configsDetail[i].RGBsColor, false);
                 break;
             }
         }

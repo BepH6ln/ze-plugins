@@ -18,7 +18,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "6.0xalpha_01",
+    version     = "6.0xalpha_02",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -33,11 +33,13 @@ char importConsole[MAXPHRASE][256];
 #include <consmanagers/centerhudparams>
 #include <consmanagers/instructorhints>
 #include <consmanagers/clientcookies>
+#include <consmanagers/clientcommands>
 
 public void OnPluginStart()
 {
     TextHudParams_OnPluginStart();
     ClientCookies_OnPluginStart();
+    ClientCommands_OnPluginStart();
 
     HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
     HookEvent("round_end", OnRoundEnd, EventHookMode_PostNoCopy);

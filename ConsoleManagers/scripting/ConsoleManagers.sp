@@ -19,22 +19,22 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
-    version     = "6.6xalpha_01",
+    version     = "6.7xalpha_01",
     url         = "https://github.com/BepH6ln"
 };
 
 char importConsole[MAXPHRASE][256];
 
-#include <consmanagers/functions>
-#include <consmanagers/applyconfigs>
-#include <consmanagers/clientcookies>
-#include <consmanagers/clientcommands>
-#include <consmanagers/timemanager>
-#include <consmanagers/timercountdown>
-#include <consmanagers/texthudparams>
-#include <consmanagers/colorconverter>
-#include <consmanagers/centerhudparams>
-#include <consmanagers/instructorhints>
+#include "consmanagers/functions.inc"
+#include "consmanagers/applyconfigs.inc"
+#include "consmanagers/clientcookies.inc"
+#include "consmanagers/clientcommands.inc"
+#include "consmanagers/timemanager.inc"
+#include "consmanagers/timercountdown.inc"
+#include "consmanagers/texthudparams.inc"
+#include "consmanagers/colorconverter.inc"
+#include "consmanagers/centerhudparams.inc"
+#include "consmanagers/instructorhints.inc"
 
 public void OnPluginStart()
 {
@@ -87,6 +87,7 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
             {
                 strcopy(importConsole[i], sizeof(importConsole[]), sArgs);
                 ReadConfigsFile(importConsole[i], i);
+
 
                 CreateNewSyntaxConsole(importConsole[i], i);
                 ExtractMultipliedConsole(importConsole[i], i);

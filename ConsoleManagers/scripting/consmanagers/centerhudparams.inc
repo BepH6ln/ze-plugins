@@ -22,10 +22,12 @@ void ConvertToHTMLSyntax(const char[] console, int phrase, int color[3], bool is
 
     char tempConsole[480];
     strcopy(tempConsole, sizeof(tempConsole), console);
-    ReplaceString(tempConsole, sizeof(tempConsole), ">", "&gt;");
-    ReplaceString(tempConsole, sizeof(tempConsole), "<", "&lt;");
-    ReplaceString(tempConsole, sizeof(tempConsole), "&", "&amp;");
-    ReplaceString(tempConsole, sizeof(tempConsole), "'", "&#39;");
+
+    ReplaceString(tempConsole, sizeof(tempConsole), ">", "");
+    ReplaceString(tempConsole, sizeof(tempConsole), "<", "");
+    ReplaceString(tempConsole, sizeof(tempConsole), "&", "");
+    ReplaceString(tempConsole, sizeof(tempConsole), "'", "");
+
     Format(consoleHTMLtag[phrase], sizeof(consoleHTMLtag[]), "<font color='#%s'>%s", colorHTMLtag, tempConsole);
 
     if(isCountable) PrepareExportCenterHud();

@@ -26,13 +26,12 @@ Action ConvertConsoleByTimer(Handle timer, int phrase)
         return Plugin_Handled;
     }
 
-    char console[256];
-    strcopy(console, sizeof(console), importConsole[phrase]);
-
     char stringTypeTimer[2][8];
     IntToString(timerCountdown[phrase][0], stringTypeTimer[0], sizeof(stringTypeTimer[]));
     IntToString(timerCountdown[phrase][1], stringTypeTimer[1], sizeof(stringTypeTimer[]));
 
+    char console[256];
+    console = AdaptClientLanguage(phrase);
     ReplaceString(console, sizeof(console), stringTypeTimer[0], stringTypeTimer[1]);
 
     if(configsDetail[phrase].isEnabledTextHud)

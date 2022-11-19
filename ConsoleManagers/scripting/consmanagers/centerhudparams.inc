@@ -10,7 +10,7 @@ stock void ImportCenterHudParameters(const char[] console, int phrase)
         {
             if(!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0) CreateTimer(5.0, RefreshCenterHudMessage, phrase);
 
-            ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, false, configsDetail[phrase].trigtimer);
+            ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, configsDetail[phrase].trigtimer > 0 ? true : false, configsDetail[phrase].trigtimer);
         }
     }
 }
@@ -30,26 +30,29 @@ void ConvertToHTMLSyntax(const char[] console, int phrase, int color[3], bool is
 
     for(int i = 0; i <= MaxClients; i++)
     {
-        if(IsValidClient(i) && clientSettings[i].isEnabledColorSync)
+        if(IsValidClient(i))
         {
-            char clientColorHTMLtag[32];
-            clientColorHTMLtag = ConvertColorToHTML(clientSettings[i].RGBsColor);
+            if(clientSettings[i].isEnabledColorSync)
+            {
+                char clientColorHTMLtag[32];
+                clientColorHTMLtag = ConvertColorToHTML(clientSettings[i].RGBsColor);
 
-            char tempColorTimer[160];
-            FormatEx(tempColorTimer, sizeof(tempColorTimer), "<font color='#%s'>%i<font color='#%s'>", clientColorHTMLtag, timer, colorHTMLtag);
+                char tempColorTimer[160];
+                FormatEx(tempColorTimer, sizeof(tempColorTimer), "<font color='#%s'>%i<font color='#%s'>", clientColorHTMLtag, timer, colorHTMLtag);
 
-            char stringTypeTimer[8];
-            IntToString(timer, stringTypeTimer, sizeof(stringTypeTimer));
-            ReplaceString(tempConsole, sizeof(tempConsole), stringTypeTimer, tempColorTimer);
+                char stringTypeTimer[8];
+                IntToString(timer, stringTypeTimer, sizeof(stringTypeTimer));
+                ReplaceString(tempConsole, sizeof(tempConsole), stringTypeTimer, tempColorTimer);
+            }
+            Format(consoleHTMLtag[phrase], sizeof(consoleHTMLtag[]), "<font color='#%s'>%s", colorHTMLtag, tempConsole);
+
+            if(isCountable) PrepareExportCenterHud();
+            else ExportCenterHudParameters(phrase, i, false);
         }
     }
-    Format(consoleHTMLtag[phrase], sizeof(consoleHTMLtag[]), "<font color='#%s'>%s", colorHTMLtag, tempConsole);
-
-    if(isCountable) PrepareExportCenterHud();
-    else ExportCenterHudParameters(phrase);
 }
 
-stock void ExportCenterHudParameters(int phrase)
+stock void ExportCenterHudParameters(int phrase, int client, bool isCountable)
 {
     int availablePhrases[3] = {-1, ...};
     for(int i = phrase; i >= 0; i--)
@@ -75,31 +78,28 @@ stock void ExportCenterHudParameters(int phrase)
     else if(availablePhrases[1] == -1)
     {
         lengthConsoleHTMLtag[0] = strlen(consoleHTMLtag[availablePhrases[2]]);
-        if(lengthConsoleHTMLtag[0] <= 72) Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-xl'>%s", consoleHTMLtag[availablePhrases[2]]);
+        if((isCountable && clientSettings[client].isEnabledColorSync && lengthConsoleHTMLtag[0] <= 116) || lengthConsoleHTMLtag[0] <= 72) Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-xl'>%s", consoleHTMLtag[availablePhrases[2]]);
         else Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-l'>%s", consoleHTMLtag[availablePhrases[2]]);
     }
     else if(availablePhrases[0] == -1)
     {
         lengthConsoleHTMLtag[0] = strlen(consoleHTMLtag[availablePhrases[2]]);
         lengthConsoleHTMLtag[1] = strlen(consoleHTMLtag[availablePhrases[1]]);
-        if(lengthConsoleHTMLtag[0] <= 104 && lengthConsoleHTMLtag[1] <= 104) Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-l'>%s<br>%s", consoleHTMLtag[availablePhrases[1]], consoleHTMLtag[availablePhrases[2]]);
+        if((isCountable && clientSettings[client].isEnabledColorSync && lengthConsoleHTMLtag[0] <= 160 && lengthConsoleHTMLtag[1] <= 160) || (lengthConsoleHTMLtag[0] <= 104 && lengthConsoleHTMLtag[1] <= 104)) Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-l'>%s<br>%s", consoleHTMLtag[availablePhrases[1]], consoleHTMLtag[availablePhrases[2]]);
         else Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-m'>%s<br>%s", consoleHTMLtag[availablePhrases[1]], consoleHTMLtag[availablePhrases[2]]);
     }
     else Format(buildupTextMessage, sizeof(buildupTextMessage), "<span class='fontSize-m'>%s<br>%s<br>%s", consoleHTMLtag[availablePhrases[0]], consoleHTMLtag[availablePhrases[1]], consoleHTMLtag[availablePhrases[2]]);
 
-    for(int i = 0; i <= MaxClients; i++)
+    if(clientSettings[client].displayStyle == 2)
     {
-        if(IsValidClient(i) && clientSettings[i].displayStyle == 2)
-        {
-            Event displayCenterHud = CreateEvent("show_survival_respawn_status");
+        Event displayCenterHud = CreateEvent("show_survival_respawn_status");
 
-            displayCenterHud.SetString("loc_token", buildupTextMessage);
-            displayCenterHud.SetInt("duration", 5);
-            displayCenterHud.SetInt("userid", -1);
+        displayCenterHud.SetString("loc_token", buildupTextMessage);
+        displayCenterHud.SetInt("duration", 5);
+        displayCenterHud.SetInt("userid", -1);
 
-            displayCenterHud.FireToClient(i);
-            displayCenterHud.Cancel();
-        }
+        displayCenterHud.FireToClient(client);
+        displayCenterHud.Cancel();
     }
 }
 
@@ -122,7 +122,10 @@ stock void PrepareExportCenterHud()
     {
         if(StrEqual(importConsole[i], ""))
         {
-            ExportCenterHudParameters(i - 1);
+            for(int j = 0; j <= MaxClients; j++)
+            {
+                if(IsValidClient(j)) ExportCenterHudParameters(i - 1, j, true);
+            }
             break;
         }
     }

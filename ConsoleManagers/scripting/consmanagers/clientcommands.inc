@@ -4,6 +4,7 @@ public void ClientCommands_OnPluginStart()
 {
     RegConsoleCmd("sm_chud", OpenConsManagersClientMenu);
     RegConsoleCmd("sm_chudpos", ClientCommands_CHudPosition);
+    RegConsoleCmd("sm_chudcolor", ClientCommands_CHudTimerColor);
 }
 
 Action OpenConsManagersClientMenu(int client, int args)
@@ -304,6 +305,48 @@ Action ClientCommands_CHudPosition(int client, int args)
             return Plugin_Handled;
         }
         CPrintToChat(client, "%s[ConsManagers] %sHud position is saved.", "{lime}", "{gold}");
+    }
+    return Plugin_Handled;
+}
+
+Action ClientCommands_CHudTimerColor(int client, int args)
+{
+    if(IsValidClient(client))
+    {
+        if(GetCmdArgs() != 3)
+        {
+			CReplyToCommand(client, "%s[ConsManagers] %sUsage: sm_chudcolor <R> <G> <B>. Default: 255 0 0", "{lime}", "{gold}");
+			return Plugin_Handled;
+        }
+
+        char tempBuffer[16];
+        int assignedValue[3];
+
+        GetCmdArg(1, tempBuffer, sizeof(tempBuffer));
+        assignedValue[0] = StringToInt(tempBuffer);
+
+        GetCmdArg(2, tempBuffer, sizeof(tempBuffer));
+        assignedValue[1] = StringToInt(tempBuffer);
+
+        GetCmdArg(3, tempBuffer, sizeof(tempBuffer));
+        assignedValue[2] = StringToInt(tempBuffer);
+
+        if((assignedValue[0] >= 0 && assignedValue[0] <= 255) && (assignedValue[1] >= 0 && assignedValue[1] <= 255) && (assignedValue[2] >= 0 && assignedValue[2] <= 255))
+        {
+            clientSettings[client].RGBsColor[0] = assignedValue[0];
+            clientSettings[client].RGBsColor[1] = assignedValue[1];
+            clientSettings[client].RGBsColor[2] = assignedValue[2];
+
+            char cookieValue[32];
+            Format(cookieValue, sizeof(cookieValue), "%i/%i/%i", assignedValue[0], assignedValue[1], assignedValue[2]);
+            SetClientCookie(client, tracksRGBsColor, cookieValue);
+        }
+        else
+        {
+            CPrintToChat(client, "%s[ConsManagers] %sInvail values are found. Change the value and try again.", "{lime}", "{darkred}");
+            return Plugin_Handled;
+        }
+        CPrintToChat(client, "%s[ConsManagers] %sTimer color is saved.", "{lime}", "{gold}");
     }
     return Plugin_Handled;
 }

@@ -19,7 +19,7 @@ Action OpenConsManagersClientMenu(int client, int args)
         case 4: clientMenu.AddItem("LANGUAGE", "지도메시지의언어：[한국어]");
     }
 
-    clientMenu.AddItem("", "", ITEMDRAW_IGNORE);
+    clientMenu.AddItem("RAWLINE", "------------------------")
 
     char tempBuffer[128];
     switch(clientSettings[client].displayStyle)
@@ -74,13 +74,13 @@ Action OpenMenuChangeTimerColor(client)
     Menu colorMenu = new Menu(colorMenuHandle, MENU_ACTIONS_ALL);
     colorMenu.SetTitle("ConsoleMangers Settings");
 
-    colorMenu.AddItem("", "Usage:", ITEMDRAW_DISABLED);
-    colorMenu.AddItem("", "!chudcolor <R> <G> <B>", ITEMDRAW_DISABLED);
-    colorMenu.AddItem("", "", ITEMDRAW_DISABLED);
-    colorMenu.AddItem("", "Example:", ITEMDRAW_DISABLED);
-    colorMenu.AddItem("", "Red: !chudcolor 255 0 0", ITEMDRAW_DISABLED);
-    colorMenu.AddItem("", "Aqua: !chudcolor 0 255 255", ITEMDRAW_DISABLED);
-    colorMenu.AddItem("", "Orange: !chudcolor 255 128 0", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("RAWLINE", "Usage:");
+    colorMenu.AddItem("RAWLINE", "sm_chudcolor <R> <G> <B>");
+    colorMenu.AddItem("RAWLINE", "")
+    colorMenu.AddItem("RAWLINE", "Example:");
+    colorMenu.AddItem("RAWLINE", "Red:    sm_chudcolor 255 0 0");
+    colorMenu.AddItem("RAWLINE", "Aqua:   sm_chudcolor 0 255 255");
+    colorMenu.AddItem("RAWLINE", "Orange: sm_chudcolor 255 128 0");
     colorMenu.ExitBackButton = true;
 
     colorMenu.Display(client, MENU_TIME_FOREVER);
@@ -105,6 +105,14 @@ int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
         case MenuAction_End:
         {
             delete menu;
+        }
+        case MenuAction_DrawItem:
+        {
+            char menuItem[16];
+            menu.GetItem(item, menuItem, sizeof(menuItem));
+
+            if(StrEqual(menuItem, "RAWLINE")) return ITEMDRAW_RAWLINE;
+            else return ITEMDRAW_DEFAULT;
         }
     }
     return 0;
@@ -158,6 +166,14 @@ int colorMenuHandle(Menu menu, MenuAction action, int client, int item)
         case MenuAction_Cancel:
         {
             OpenConsManagersClientMenu(client, 1);
+        }
+        case MenuAction_DrawItem:
+        {
+            char menuItem[16];
+            menu.GetItem(item, menuItem, sizeof(menuItem));
+
+            if(StrEqual(menuItem, "RAWLINE")) return ITEMDRAW_RAWLINE;
+            else return ITEMDRAW_DEFAULT;
         }
     }
     return 0;

@@ -10,12 +10,12 @@ stock void ImportCenterHudParameters(const char[] console, int phrase)
         {
             if(!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0) CreateTimer(5.0, RefreshCenterHudMessage, phrase);
 
-            ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, false);
+            ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, false, configsDetail[phrase].trigtimer);
         }
     }
 }
 
-void ConvertToHTMLSyntax(const char[] console, int phrase, int color[3], bool isCountable)
+void ConvertToHTMLSyntax(const char[] console, int phrase, int color[3], bool isCountable, int timer)
 {
     char colorHTMLtag[32];
     colorHTMLtag = ConvertColorToHTML(color);
@@ -28,6 +28,21 @@ void ConvertToHTMLSyntax(const char[] console, int phrase, int color[3], bool is
     ReplaceString(tempConsole, sizeof(tempConsole), "&", "");
     ReplaceString(tempConsole, sizeof(tempConsole), "'", "");
 
+    for(int i = 0; i <= MaxClients; i++)
+    {
+        if(IsValidClient(i) && clientSettings[i].isEnabledColorSync)
+        {
+            char clientColorHTMLtag[32];
+            clientColorHTMLtag = ConvertColorToHTML(clientSettings[i].RGBsColor);
+
+            char tempColorTimer[160];
+            FormatEx(tempColorTimer, sizeof(tempColorTimer), "<font color='#%s'>%i<font color='#%s'>", clientColorHTMLtag, timer, colorHTMLtag);
+
+            char stringTypeTimer[8];
+            IntToString(timer, stringTypeTimer, sizeof(stringTypeTimer));
+            ReplaceString(tempConsole, sizeof(tempConsole), stringTypeTimer, tempColorTimer);
+        }
+    }
     Format(consoleHTMLtag[phrase], sizeof(consoleHTMLtag[]), "<font color='#%s'>%s", colorHTMLtag, tempConsole);
 
     if(isCountable) PrepareExportCenterHud();

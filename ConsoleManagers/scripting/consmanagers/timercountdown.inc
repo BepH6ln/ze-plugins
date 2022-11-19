@@ -42,8 +42,8 @@ Action ConvertConsoleByTimer(Handle timer, int phrase)
 
     if(configsDetail[phrase].isEnabledCenterHud)
     {
-        if(timerCountdown[phrase][1] <= 5) ConvertToHTMLSyntax(console, phrase, {255, 0, 128}, true);
-        else ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, true);
+        if(timerCountdown[phrase][1] <= 5)  ConvertToHTMLSyntax(console, phrase, {255, 0, 128}, true, timerCountdown[phrase][1]);
+        else ConvertToHTMLSyntax(console, phrase, configsDetail[phrase].RGBsColor, true, timerCountdown[phrase][1]);
     }
 
     if(configsDetail[phrase].isEnabledHintHud && configsDetail[phrase].isEnableHintCountdown)

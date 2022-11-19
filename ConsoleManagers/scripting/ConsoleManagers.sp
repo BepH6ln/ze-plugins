@@ -18,8 +18,8 @@ public Plugin myinfo =
 {
     name        = "ConsoleManagers",
     author      = "Beppu",
-    description = "Better console syntaxes and additional commands.",
-    version     = "6.5xalpha_02",
+    description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
+    version     = "6.6xalpha_01",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -98,8 +98,9 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
                 break;
             }
         }
+        return Plugin_Stop;
     }
-    return Plugin_Handled;
+    return Plugin_Continue;
 }
 
 void CreateNewSyntaxConsole(const char[] console, int phrase)

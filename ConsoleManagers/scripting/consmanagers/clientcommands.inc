@@ -19,7 +19,7 @@ Action OpenConsManagersClientMenu(int client, int args)
         case 4: clientMenu.AddItem("LANGUAGE", "지도메시지의언어：[한국어]");
     }
 
-    clientMenu.AddItem("RAWLINE", "------------------------")
+    clientMenu.AddItem("DISABLED", "------------------------");
 
     char tempBuffer[128];
     switch(clientSettings[client].displayStyle)
@@ -63,6 +63,7 @@ Action OpenMenuChangeHudPos(int client)
     hudposMenu.AddItem("MOVELEFTBIT", "Move to left a bit");
     hudposMenu.AddItem("MOVEUPBIT", "Move to up a bit");
     hudposMenu.AddItem("MOVEDOWNBIT", "Move to down a bit");
+    hudposMenu.AddItem("DISABLED", " \nYou can also use 'sm_chudpos <x> <y>' \nto set position directly.");
     hudposMenu.ExitBackButton = true;
 
     hudposMenu.Display(client, MENU_TIME_FOREVER);
@@ -74,13 +75,7 @@ Action OpenMenuChangeTimerColor(client)
     Menu colorMenu = new Menu(colorMenuHandle, MENU_ACTIONS_ALL);
     colorMenu.SetTitle("ConsoleMangers Settings");
 
-    colorMenu.AddItem("RAWLINE", "Usage:");
-    colorMenu.AddItem("RAWLINE", "sm_chudcolor <R> <G> <B>");
-    colorMenu.AddItem("RAWLINE", "")
-    colorMenu.AddItem("RAWLINE", "Example:");
-    colorMenu.AddItem("RAWLINE", "Red:    sm_chudcolor 255 0 0");
-    colorMenu.AddItem("RAWLINE", "Aqua:   sm_chudcolor 0 255 255");
-    colorMenu.AddItem("RAWLINE", "Orange: sm_chudcolor 255 128 0");
+    colorMenu.AddItem("DISABLED", " \nUsage: \nsm_chudcolor [R] [G] [B] \n* Intenger 0-255 available \n \nExample: \nRed:       sm_chudcolor 255 0 0 \nAqua:     sm_chudcolor 0 255 255 \nOrange: sm_chudcolor 255 128 0");
     colorMenu.ExitBackButton = true;
 
     colorMenu.Display(client, MENU_TIME_FOREVER);
@@ -111,7 +106,7 @@ int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
             char menuItem[16];
             menu.GetItem(item, menuItem, sizeof(menuItem));
 
-            if(StrEqual(menuItem, "RAWLINE")) return ITEMDRAW_RAWLINE;
+            if(StrEqual(menuItem, "DISABLED")) return ITEMDRAW_DISABLED;
             else return ITEMDRAW_DEFAULT;
         }
     }
@@ -153,6 +148,7 @@ int hudposMenuHandle(Menu menu, MenuAction action, int client, int item)
             else if(StrEqual(menuItem, "MOVELEFTBIT") && clientSettings[client].hudPosition[0] < 0.01) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "MOVEUPBIT") && clientSettings[client].hudPosition[1] < 0.01) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "MOVEDOWNBIT") && clientSettings[client].hudPosition[1] > 0.9) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "DISABLED")) return ITEMDRAW_DISABLED;
             else return ITEMDRAW_DEFAULT;
         }
     }
@@ -172,7 +168,7 @@ int colorMenuHandle(Menu menu, MenuAction action, int client, int item)
             char menuItem[16];
             menu.GetItem(item, menuItem, sizeof(menuItem));
 
-            if(StrEqual(menuItem, "RAWLINE")) return ITEMDRAW_RAWLINE;
+            if(StrEqual(menuItem, "DISABLED")) return ITEMDRAW_DISABLED;
             else return ITEMDRAW_DEFAULT;
         }
     }

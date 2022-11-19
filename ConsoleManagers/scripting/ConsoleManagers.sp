@@ -19,7 +19,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
-    version     = "6.8xalpha_01",
+    version     = "6.9alpha",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -88,13 +88,20 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
                 strcopy(importConsole[i], sizeof(importConsole[]), sArgs);
                 ReadConfigsFile(importConsole[i], i);
 
-                CreateNewSyntaxConsole(importConsole[i], i);
+                char console[256];
+                console = AdaptClientLanguage(i);
+
+                CreateNewSyntaxConsole(console, i);
                 ExtractMultipliedConsole(importConsole[i], i);
 
-                if(!StrEqual(importConsole[i], "") && configsDetail[i].trigtimer > 0 && configsDetail[i].isEnabledCountdown) SaveConsoleParameters(i);
-                ImportTextHudParameters(importConsole[i], i);
-                ImportCenterHudParameters(importConsole[i], i);
-                GenerateInstructorHint(importConsole[i], i, configsDetail[i].RGBsColor, false);
+                if(!StrEqual(importConsole[i], ""))
+                {
+                    if(configsDetail[i].trigtimer > 0 && configsDetail[i].isEnabledCountdown) SaveConsoleParameters(i);
+
+                    ImportTextHudParameters(console, i);
+                    ImportCenterHudParameters(console, i);
+                    GenerateInstructorHint(console, i, configsDetail[i].RGBsColor, false);
+                }
                 break;
             }
         }
@@ -122,4 +129,25 @@ void CreateNewSyntaxConsole(const char[] console, int phrase)
     {
         if(IsValidClient(i)) CPrintToChat(i, "Console: %s", exportConsole);
     }
+}
+
+stock char[] AdaptClientLanguage(int phrase)
+{
+    char console[256];
+
+    for(int i = 0; i <= MaxClients; i++)
+    {
+        if(IsValidClient(i))
+        {
+            switch(clientSettings[i].language)
+            {
+                case 0: strcopy(console, sizeof(console), configsDetail[phrase].consoleEN);
+                case 1: strcopy(console, sizeof(console), configsDetail[phrase].consoleJP);
+                case 2: strcopy(console, sizeof(console), configsDetail[phrase].consoleCHI);
+                case 3: strcopy(console, sizeof(console), configsDetail[phrase].consoleZHO);
+                case 4: strcopy(console, sizeof(console), configsDetail[phrase].consoleKR);
+            }
+        }
+    }
+    return console;
 }

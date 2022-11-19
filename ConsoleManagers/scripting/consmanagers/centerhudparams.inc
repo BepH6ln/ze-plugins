@@ -72,7 +72,7 @@ stock void ExportCenterHudParameters(int phrase)
 
     for(int i = 0; i <= MaxClients; i++)
     {
-        if(IsValidClient(i))
+        if(IsValidClient(i) && clientSettings[i].displayStyle == 2)
         {
             Event displayCenterHud = CreateEvent("show_survival_respawn_status");
 

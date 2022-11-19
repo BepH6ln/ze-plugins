@@ -96,7 +96,7 @@ stock void ExportTextHudParameters(const char[] console, int phrase, int color[3
     int channel = useChannel[phrase];
     for(int i = 0; i <= MaxClients; i++)
     {
-        if(IsValidClient(i))
+        if(IsValidClient(i) && clientSettings[i].displayStyle == 1)
         {
             float textPositionX = clientSettings[i].hudPosition[0];
             float textPositionY = clientSettings[i].hudPosition[1] + 0.03 * channel;

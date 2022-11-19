@@ -54,7 +54,7 @@ stock void ReadConfigsFile(const char[] console, int phrase)
     else if(tempBuffer[0] == '#' && strlen(tempBuffer) == 7) ConvertHTMLToColor(tempBuffer, phrase);
     else {configsDetail[phrase].RGBsColor[0] = 190; configsDetail[phrase].RGBsColor[1] = 255; configsDetail[phrase].RGBsColor[2] = 144;}
 
-    configsDetail[phrase].trigtimer = kvsConsole.GetNum("timer", 0);
+    configsDetail[phrase].trigtimer = kvsConsole.GetNum("timer", -999);
 
     kvsConsole.GetString("countdown", tempBuffer, sizeof(tempBuffer), "false");
     configsDetail[phrase].isEnabledCountdown = StrEqual(tempBuffer, "true");

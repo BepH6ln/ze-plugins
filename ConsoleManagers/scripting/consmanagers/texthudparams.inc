@@ -94,16 +94,16 @@ public Action RefreshChannelStatusEnds(Handle timer, int phrase)
 stock void ExportTextHudParameters(const char[] console, int phrase, int color[3], bool isCountable)
 {
     int channel = useChannel[phrase];
-    float textPositionX = 0.16;
-    float textPositionY = 0.09 + 0.03 * channel;
-
-    if(isCountable) SetHudTextParams(textPositionX, textPositionY, 1.0, color[0], color[1], color[2], 255, 1, 0.0, 0.02, 5.0);
-    else SetHudTextParams(textPositionX, textPositionY, configsDetail[phrase].holdtime, color[0], color[1], color[2], 255, 2, 0.0, 0.02, 5.0);
-
     for(int i = 0; i <= MaxClients; i++)
     {
         if(IsValidClient(i))
         {
+            float textPositionX = clientSettings[i].hudPosition[0];
+            float textPositionY = clientSettings[i].hudPosition[1] + 0.03 * channel;
+
+            if(isCountable) SetHudTextParams(textPositionX, textPositionY, 1.0, color[0], color[1], color[2], 255, 1, 0.0, 0.02, 5.0);
+            else SetHudTextParams(textPositionX, textPositionY, configsDetail[phrase].holdtime, color[0], color[1], color[2], 255, 2, 0.0, 0.02, 5.0);
+
             #if defined DYNAMIC_CHANNELS
                 ShowHudText(i, GetDynamicChannel(hudChannelGroup[channel]), console);
             #else

@@ -1,6 +1,7 @@
 #pragma newdecls required
 #pragma semicolon 1
 
+#include <clientprefs>
 #include <sdkhooks>
 #include <sdktools>
 #include <sourcemod>
@@ -18,7 +19,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "5.1alpha",
+    version     = "6.5xalpha_01",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -26,6 +27,8 @@ char importConsole[MAXPHRASE][256];
 
 #include <consmanagers/functions>
 #include <consmanagers/applyconfigs>
+#include <consmanagers/clientcookies>
+#include <consmanagers/clientcommands>
 #include <consmanagers/timemanager>
 #include <consmanagers/timercountdown>
 #include <consmanagers/texthudparams>
@@ -36,6 +39,8 @@ char importConsole[MAXPHRASE][256];
 public void OnPluginStart()
 {
     TextHudParams_OnPluginStart();
+    ClientCookies_OnPluginStart();
+    ClientCommands_OnPluginStart();
 
     HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
     HookEvent("round_end", OnRoundEnd, EventHookMode_PostNoCopy);

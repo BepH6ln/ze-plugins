@@ -1,4 +1,4 @@
-#define CONSOLEMANAGERS_FUNCTIONS#define CONSOLEMANAGERS_FUNCTIONS
+#define CONSOLEMANAGERS_FUNCTIONS
 
 enum struct classConfigFileDetail
 {
@@ -22,6 +22,15 @@ enum struct classConfigFileDetail
     char    hintKeyBinds[32];       // "bind"
     int     hintHoldtime;           // "timeout"
     float   hintRange;              // "range"
+}
+
+enum struct classClientSetting
+{
+    int     language;
+    int     displayStyle;
+    float   hudPosition[2];
+    bool    isEnabledColorSync;
+    int     RGBsColor[3];
 }
 
 stock bool IsValidClient(int client)

@@ -214,9 +214,9 @@ stock bool ClientCookieHudStyles(int client, int hudstyle)
 
         switch(hudstyle)
         {
-            case 0: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: %s[OFF].", "{lime}", "{gold}", "{red}");
-            case 1: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [GameText].", "{lime}", "{gold}");
-            case 2: CPrintToChat(client, "%s[ConsManager] %sYou changed the console Hud style: [CenterHud].", "{lime}", "{gold}");
+            case 0: CPrintToChat(client, "%s[ConsManagers] %sYou changed the console Hud style: %s[OFF].", "{lime}", "{gold}", "{red}");
+            case 1: CPrintToChat(client, "%s[ConsManagers] %sYou changed the console Hud style: [GameText].", "{lime}", "{gold}");
+            case 2: CPrintToChat(client, "%s[ConsManagers] %sYou changed the console Hud style: [CenterHud].", "{lime}", "{gold}");
         }
         return true;
     }
@@ -259,8 +259,8 @@ stock bool ClientCookieColorSync(int client, bool hasColorSync)
         SetClientCookie(client, toggleDisplayStyle, clientSettings[client].isEnabledColorSync ? "1":"0");
         OpenConsManagersClientMenu(client, 1);
 
-        if(hasColorSync) CPrintToChat(client, "%s[ConsManager] %sYou changed the color sync for timers: %s[Enabled].", "{lime}", "{gold}", "{green}");
-        else CPrintToChat(client, "%s[ConsManager] %sYou changed the color sync for timers: %s[Disabled].", "{lime}", "{gold}", "{red}");
+        if(hasColorSync) CPrintToChat(client, "%s[ConsManagers] %sYou changed the color sync for timers: %s[Enabled].", "{lime}", "{gold}", "{green}");
+        else CPrintToChat(client, "%s[ConsManagers] %sYou changed the color sync for timers: %s[Disabled].", "{lime}", "{gold}", "{red}");
         return true;
     }
     return false;

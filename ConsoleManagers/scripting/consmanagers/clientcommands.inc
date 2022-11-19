@@ -3,6 +3,7 @@
 public void ClientCommands_OnPluginStart()
 {
     RegConsoleCmd("sm_chud", OpenConsManagersClientMenu);
+    RegConsoleCmd("sm_chudpos", ClientCommands_CHudPosition);
 }
 
 Action OpenConsManagersClientMenu(int client, int args)
@@ -262,4 +263,47 @@ stock bool ClientCookieColorSync(int client, bool hasColorSync)
         return true;
     }
     return false;
+}
+
+Action ClientCommands_CHudPosition(int client, int args)
+{
+    if(IsValidClient(client))
+    {
+        if(GetCmdArgs() == 0)
+        {
+            OpenMenuChangeHudPos(client);
+            return Plugin_Handled;
+        }
+        else if(GetCmdArgs() == 1 || GetCmdArgs() > 2)
+        {
+			CReplyToCommand(client, "%s[ConsManagers] %sUsage: sm_chudpos <x> <y>. Default: 0.16 0.09", "{lime}", "{gold}");
+			return Plugin_Handled;
+        }
+
+        char tempBuffer[16];
+        float assignedValue[2];
+
+        GetCmdArg(1, tempBuffer, sizeof(tempBuffer));
+        assignedValue[0] = StringToFloat(tempBuffer);
+
+        GetCmdArg(2, tempBuffer, sizeof(tempBuffer));
+        assignedValue[1] = StringToFloat(tempBuffer);
+
+        if(((assignedValue[0] >= 0.0 && assignedValue[0] <= 1.0) || assignedValue[0] == -1.0) && ((assignedValue[1] >= 0.0 && assignedValue[1] <= 1.0) || assignedValue[1] == -1.0))
+        {
+            clientSettings[client].hudPosition[0] = assignedValue[0];
+            clientSettings[client].hudPosition[1] = assignedValue[1];
+
+            char cookieValue[32];
+            Format(cookieValue, sizeof(cookieValue), "%f/%f", assignedValue[0], assignedValue[1]);
+            SetClientCookie(client, textHudPosition, cookieValue);
+        }
+        else
+        {
+            CPrintToChat(client, "%s[ConsManagers] %sInvail values are found. Change the value and try again.", "{lime}", "{darkred}");
+            return Plugin_Handled;
+        }
+        CPrintToChat(client, "%s[ConsManagers] %sHud position is saved.", "{lime}", "{gold}");
+    }
+    return Plugin_Handled;
 }

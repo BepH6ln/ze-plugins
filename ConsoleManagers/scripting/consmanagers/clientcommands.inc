@@ -69,6 +69,24 @@ Action OpenMenuChangeHudPos(int client)
     return Plugin_Handled;
 }
 
+Action OpenMenuChangeTimerColor(client)
+{
+    menu colorMenu = new Menu(_, MENU_ACTIONS_ALL);
+    colorMenu.SetTitle("ConsoleMangers Settings");
+
+    colorMenu.AddItem("", "Usage:", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("", "!chudcolor <R> <G> <B>", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("", "", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("", "Example:", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("", "Red: !chudcolor 255 0 0", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("", "Aqua: !chudcolor 0 255 255", ITEMDRAW_DISABLED);
+    colorMenu.AddItem("", "Orange: !chudcolor 255 128 0", ITEMDRAW_DISABLED);
+    colorMenu.ExitBackButton = true;
+
+    colorMenu.Display(client, MENU_TIME_FOREVER);
+    return Plugin_Handled;
+}
+
 int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
 {
     switch(action)
@@ -82,7 +100,7 @@ int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
             else if(StrEqual(menuItem, "HUDSTYLES")) ClientCookieHudStyles(client, clientSettings[client].displayStyle < 2 ? clientSettings[client].displayStyle + 1 : 0);
             else if(StrEqual(menuItem, "HUDPOSITION")) OpenMenuChangeHudPos(client);
             else if(StrEqual(menuItem, "COLORSYNCS")) ClientCookieColorSync(client, clientSettings[client].isEnabledColorSync ? false : true);
-            // else if(StrEqual(menuItem, "TIMERCOLOR")) OpenMenuChangeTimerColor(client);
+            else if(StrEqual(menuItem, "TIMERCOLOR")) OpenMenuChangeTimerColor(client);
         }
         case MenuAction_End:
         {

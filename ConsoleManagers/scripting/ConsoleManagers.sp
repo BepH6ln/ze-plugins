@@ -19,7 +19,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
-    version     = "6.7xalpha_01",
+    version     = "6.8xalpha_01",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -87,7 +87,6 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
             {
                 strcopy(importConsole[i], sizeof(importConsole[]), sArgs);
                 ReadConfigsFile(importConsole[i], i);
-
 
                 CreateNewSyntaxConsole(importConsole[i], i);
                 ExtractMultipliedConsole(importConsole[i], i);

@@ -71,7 +71,7 @@ Action OpenMenuChangeHudPos(int client)
 
 Action OpenMenuChangeTimerColor(client)
 {
-    menu colorMenu = new Menu(_, MENU_ACTIONS_ALL);
+    Menu colorMenu = new Menu(colorMenuHandle, MENU_ACTIONS_ALL);
     colorMenu.SetTitle("ConsoleMangers Settings");
 
     colorMenu.AddItem("", "Usage:", ITEMDRAW_DISABLED);
@@ -146,6 +146,18 @@ int hudposMenuHandle(Menu menu, MenuAction action, int client, int item)
             else if(StrEqual(menuItem, "MOVEUPBIT") && clientSettings[client].hudPosition[1] < 0.01) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "MOVEDOWNBIT") && clientSettings[client].hudPosition[1] > 0.9) return ITEMDRAW_DISABLED;
             else return ITEMDRAW_DEFAULT;
+        }
+    }
+    return 0;
+}
+
+int colorMenuHandle(Menu menu, MenuAction action, int client, int item)
+{
+    switch(action)
+    {
+        case MenuAction_Cancel:
+        {
+            OpenConsManagersClientMenu(client, 1);
         }
     }
     return 0;

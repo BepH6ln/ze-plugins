@@ -19,7 +19,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.",
-    version     = "6.2xalpha_03",
+    version     = "6.3xalpha_01",
     url         = "https://github.com/BepH6ln"
 };
 

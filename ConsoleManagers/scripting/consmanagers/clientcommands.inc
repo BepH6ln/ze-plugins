@@ -99,7 +99,7 @@ int hudposMenuHandle(Menu menu, MenuAction action, int client, int item)
         case MenuAction_Select:
         {
             char menuItem[16];
-            GetMenuItem(menu, item, menuItem, sizeof(menuItem));
+            menu.GetItem(item, menuItem, sizeof(menuItem));
 
             if(StrEqual(menuItem, "MOVERIGHT")) ClientCookieHudPos(client, 1);
             else if(StrEqual(menuItem, "MOVELEFT")) ClientCookieHudPos(client, 2);
@@ -113,6 +113,21 @@ int hudposMenuHandle(Menu menu, MenuAction action, int client, int item)
         case MenuAction_Cancel:
         {
             OpenConsManagersClientMenu(client, 1);
+        }
+        case MenuAction_DrawItem:
+        {
+            char menuItem[16];
+            menu.GetItem(item, menuItem, sizeof(menuItem));
+
+            if(StrEqual(menuItem, "MOVERIGHT") && clientSettings[client].hudPosition[0] > 0.95) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVELEFT") && clientSettings[client].hudPosition[0] < 0.05) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVEUP") && clientSettings[client].hudPosition[1] < 0.05) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVEDOWN") && clientSettings[client].hudPosition[1] > 0.86) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVERIGHTBIT") && clientSettings[client].hudPosition[0] > 0.99) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVELEFTBIT") && clientSettings[client].hudPosition[0] < 0.01) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVEUPBIT") && clientSettings[client].hudPosition[1] < 0.01) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVEDOWNBIT") && clientSettings[client].hudPosition[1] > 0.9) return ITEMDRAW_DISABLED;
+            else return ITEMDRAW_DEFAULT;
         }
     }
     return 0;

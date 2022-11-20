@@ -15,7 +15,7 @@ stock void LoadConfigsFile()
     if(FileExists(configFullPath))
     {
         FileToKeyValues(kvsConsole, configFullPath);
-        CPrintToChatAll("%s[ConsManagers] %sThe current map is supported by ConsoleManagers.", "{lime}", "{gold}");
+        CPrintToChatAll("%s[ConsManagers] %sThe current map is supported by ConsoleManagers.", "{lime}", "{orange}");
     }
 }
 

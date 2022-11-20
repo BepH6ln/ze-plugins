@@ -19,7 +19,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
-    version     = "1.4beta",
+    version     = "1.4beta_lpr",
     url         = "https://github.com/BepH6ln"
 };
 
@@ -127,7 +127,7 @@ void CreateNewSyntaxConsole(const char[] console, int phrase)
 
     for(int i = 0; i <= MaxClients; i++)
     {
-        if(IsValidClient(i)) CPrintToChat(i, "Console: %s", exportConsole);
+        if(IsValidClient(i)) CPrintToChat(i, "%s[CONSOLE] %s", "{darkred}", exportConsole);
     }
 }
 

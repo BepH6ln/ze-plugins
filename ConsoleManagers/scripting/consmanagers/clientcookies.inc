@@ -1,6 +1,7 @@
 #define CONSOLEMANAGERS_CLIENTCOOKIES
 
 Handle  selectLanguage          = null,
+        instructorEnabled       = null,
         toggleDisplayStyle      = null,
         textHudPosition         = null,
         colorSyncEnabled        = null,
@@ -10,6 +11,7 @@ classClientSetting clientSettings[MAXPLAYERS + 1];
 public void ClientCookies_OnPluginStart()
 {
     selectLanguage      = RegClientCookie("consolemanagers_language", "", CookieAccess_Private);
+    instructorEnabled   = RegClientCookie("consolemanagers_instructor", "", CookieAccess_Private);
     toggleDisplayStyle  = RegClientCookie("consolemanagers_displaystyle", "", CookieAccess_Private);
     textHudPosition     = RegClientCookie("consolemanagers_hudpos", "", CookieAccess_Private);
     colorSyncEnabled    = RegClientCookie("consolemanager_colorSync", "", CookieAccess_Private);
@@ -28,6 +30,10 @@ public void OnClientCookiesCached(int client)
     GetClientCookie(client, selectLanguage, cookieValue, sizeof(cookieValue));
     if(!StrEqual(cookieValue, "")) clientSettings[client].language = StringToInt(cookieValue);
     else clientSettings[client].language = 0;
+
+    GetClientCookie(client, instructorEnabled, cookieValue, sizeof(cookieValue));
+    if(!StrEqual(cookieValue, "")) clientSettings[client].isEnabledInstructor = view_as<bool>(StringToInt(cookieValue));
+    else clientSettings[client].isEnabledInstructor = true;
 
     GetClientCookie(client, toggleDisplayStyle, cookieValue, sizeof(cookieValue));
     if(!StrEqual(cookieValue, "")) clientSettings[client].displayStyle = StringToInt(cookieValue);
@@ -91,6 +97,7 @@ public void OnClientDisconnect(int client)
 void SaveDefaultClientSettings(int client)
 {
     clientSettings[client].language             = 0;
+    clientSettings[client].isEnabledInstructor  = true;
     clientSettings[client].displayStyle         = 1;
     clientSettings[client].hudPosition[0]       = 0.16;
     clientSettings[client].hudPosition[1]       = 0.09;

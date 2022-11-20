@@ -21,6 +21,9 @@ Action OpenConsManagersClientMenu(int client, int args)
         case 4: clientMenu.AddItem("LANGUAGE", "지도메시지의언어：[한국어]");
     }
 
+    if(clientSettings[client].isEnabledInstructor) clientMenu.AddItem("INSTRUCTOR", "Instuctor Hint: [Enable]")
+    else clientMenu.AddItem("INSTRUCTOR", "Instuctor Hint: [Disable]")
+
     clientMenu.AddItem("DISABLED", "------------------------");
 
     char tempBuffer[128];
@@ -94,6 +97,7 @@ int clientMenuHandle(Menu menu, MenuAction action, int client, int item)
             GetMenuItem(menu, item, menuItem, sizeof(menuItem));
 
             if(StrEqual(menuItem, "LANGUAGE")) ClientCookieLanguage(client, clientSettings[client].language < 4 ? clientSettings[client].language + 1 : 0);
+            else if(StrEqual(menuItem, "INSTRUCTOR")) ClientCookieInstructor(client, clientSettings[client].isEnabledInstructor ? false : true);
             else if(StrEqual(menuItem, "HUDSTYLES")) ClientCookieHudStyles(client, clientSettings[client].displayStyle < 2 ? clientSettings[client].displayStyle + 1 : 0);
             else if(StrEqual(menuItem, "HUDPOSITION")) OpenMenuChangeHudPos(client);
             else if(StrEqual(menuItem, "COLORSYNCS")) ClientCookieColorSync(client, clientSettings[client].isEnabledColorSync ? false : true);
@@ -201,6 +205,21 @@ stock bool ClientCookieLanguage(int client, int language)
     return false;
 }
 
+stock bool ClientCookieInstructor(int client, bool hasInstuctor)
+{
+    if(IsValidClient(client))
+    {
+        clientSettings[client].isEnabledInstructor = hasInstuctor;
+        SetClientCookie(client, instructorEnabled, clientSettings[client].isEnabledInstructor ? "1":"0");
+        OpenConsManagersClientMenu(client, 1);
+
+        if(hasInstuctor) CPrintToChat(client, "%s[ConsManagers] %sThe instructor is now %s[Enabled].", "{lime}", "{gold}", "{green}");
+        else CPrintToChat(client, "%s[ConsManagers] %sThe instructor is now %s[Disabled].", "{lime}", "{gold}", "{red}");
+        return true;
+    }
+    return false;
+}
+
 stock bool ClientCookieHudStyles(int client, int hudstyle)
 {
     if(IsValidClient(client))
@@ -256,11 +275,11 @@ stock bool ClientCookieColorSync(int client, bool hasColorSync)
     if(IsValidClient(client))
     {
         clientSettings[client].isEnabledColorSync = hasColorSync;
-        SetClientCookie(client, toggleDisplayStyle, clientSettings[client].isEnabledColorSync ? "1":"0");
+        SetClientCookie(client, colorSyncEnabled, clientSettings[client].isEnabledColorSync ? "1":"0");
         OpenConsManagersClientMenu(client, 1);
 
-        if(hasColorSync) CPrintToChat(client, "%s[ConsManagers] %sYou changed the color sync for timers: %s[Enabled].", "{lime}", "{gold}", "{green}");
-        else CPrintToChat(client, "%s[ConsManagers] %sYou changed the color sync for timers: %s[Disabled].", "{lime}", "{gold}", "{red}");
+        if(hasColorSync) CPrintToChat(client, "%s[ConsManagers] %sThe color sync for timers is now %s[Enabled].", "{lime}", "{gold}", "{green}");
+        else CPrintToChat(client, "%s[ConsManagers] %sThe color sync for timers is now %s[Disabled].", "{lime}", "{gold}", "{red}");
         return true;
     }
     return false;

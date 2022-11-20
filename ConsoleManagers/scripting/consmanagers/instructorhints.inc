@@ -29,6 +29,11 @@ stock void GenerateInstructorHint(const char[] console, int phrase, int color[3]
                 DispatchKeyValue(entity, "hint_icon_onscreen", "icon_alert_red");
                 DispatchKeyValue(entity, "hint_icon_offscreen", "icon_alert_red");
             }
+            else if(configsDetail[phrase].hintIcon, "use_binding")
+            {
+                DispatchKeyValue(entity, "hint_icon_onscreen", "use_binding");
+                DispatchKeyValue(entity, "hint_icon_offscreen", "icon_alert_red");
+            }
             else
             {
                 DispatchKeyValue(entity, "hint_icon_onscreen", configsDetail[phrase].hintIcon);

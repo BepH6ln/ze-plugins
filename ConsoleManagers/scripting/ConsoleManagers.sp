@@ -19,7 +19,7 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
-    version     = "1.4beta",
+    version     = "1.5beta",
     url         = "https://github.com/BepH6ln"
 };
 

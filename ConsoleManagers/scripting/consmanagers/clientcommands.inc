@@ -194,11 +194,11 @@ stock bool ClientCookieLanguage(int client, int language)
 
         switch(language)
         {
-            case 0: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console language to [English].", "{green}", "{gold}");
-            case 1: CPrintToChat(client, "%s[ConsMgrs] %sコンソールの言語を [日本語] に変更しました.", "{green}", "{gold}");
-            case 2: CPrintToChat(client, "%s[ConsMgrs] %s您的地图消息语言已切换为 [简体中文].", "{green}", "{gold}");
-            case 3: CPrintToChat(client, "%s[ConsMgrs] %s您的地圖消息語言已切換為 [繁體中文].", "{green}", "{gold}");
-            case 4: CPrintToChat(client, "%s[ConsMgrs] %s맵메시지의언어가 [한국어] 로변경되었습니다. ", "{green}", "{gold}");
+            case 0: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console language to [English].", "{green}", "{orange}");
+            case 1: CPrintToChat(client, "%s[ConsMgrs] %sコンソールの言語を [日本語] に変更しました.", "{green}", "{orange}");
+            case 2: CPrintToChat(client, "%s[ConsMgrs] %s您的地图消息语言已切换为 [简体中文].", "{green}", "{orange}");
+            case 3: CPrintToChat(client, "%s[ConsMgrs] %s您的地圖消息語言已切換為 [繁體中文].", "{green}", "{orange}");
+            case 4: CPrintToChat(client, "%s[ConsMgrs] %s맵메시지의언어가 [한국어] 로변경되었습니다. ", "{green}", "{orange}");
         }
         return true;
     }
@@ -213,8 +213,8 @@ stock bool ClientCookieInstructor(int client, bool hasInstuctor)
         SetClientCookie(client, instructorEnabled, clientSettings[client].isEnabledInstructor ? "1":"0");
         OpenConsManagersClientMenu(client, 1);
 
-        if(hasInstuctor) CPrintToChat(client, "%s[ConsMgrs] %sThe instructor is now %s[Enabled]%s.", "{green}", "{gold}", "{green}", "{gold}");
-        else CPrintToChat(client, "%s[ConsMgrs] %sThe instructor is now %s[Disabled]%s.", "{green}", "{gold}", "{red}", "{gold}");
+        if(hasInstuctor) CPrintToChat(client, "%s[ConsMgrs] %sThe instructor is now %s[Enabled]%s.", "{green}", "{orange}", "{green}", "{orange}");
+        else CPrintToChat(client, "%s[ConsMgrs] %sThe instructor is now %s[Disabled]%s.", "{green}", "{orange}", "{red}", "{orange}");
         return true;
     }
     return false;
@@ -233,9 +233,9 @@ stock bool ClientCookieHudStyles(int client, int hudstyle)
 
         switch(hudstyle)
         {
-            case 0: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console Hud style: %s[OFF]%s.", "{green}", "{gold}", "{red}", "{gold}");
-            case 1: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console Hud style: [GameText].", "{green}", "{gold}");
-            case 2: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console Hud style: [CenterHud].", "{green}", "{gold}");
+            case 0: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console Hud style: %s[OFF]%s.", "{green}", "{orange}", "{red}", "{orange}");
+            case 1: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console Hud style: [GameText].", "{green}", "{orange}");
+            case 2: CPrintToChat(client, "%s[ConsMgrs] %sYou changed the console Hud style: [CenterHud].", "{green}", "{orange}");
         }
         return true;
     }
@@ -278,8 +278,8 @@ stock bool ClientCookieColorSync(int client, bool hasColorSync)
         SetClientCookie(client, colorSyncEnabled, clientSettings[client].isEnabledColorSync ? "1":"0");
         OpenConsManagersClientMenu(client, 1);
 
-        if(hasColorSync) CPrintToChat(client, "%s[ConsMgrs] %sThe color sync for timers is now %s[Enabled]%s.", "{green}", "{gold}", "{green}", "{gold}");
-        else CPrintToChat(client, "%s[ConsMgrs] %sThe color sync for timers is now %s[Disabled]%s.", "{green}", "{gold}", "{red}", "{gold}");
+        if(hasColorSync) CPrintToChat(client, "%s[ConsMgrs] %sThe color sync for timers is now %s[Enabled]%s.", "{green}", "{orange}", "{green}", "{orange}");
+        else CPrintToChat(client, "%s[ConsMgrs] %sThe color sync for timers is now %s[Disabled]%s.", "{green}", "{orange}", "{red}", "{orange}");
         return true;
     }
     return false;
@@ -296,7 +296,7 @@ Action ClientCommands_CHudPosition(int client, int args)
         }
         else if(GetCmdArgs() == 1 || GetCmdArgs() > 2)
         {
-			CReplyToCommand(client, "%s[ConsMgrs] %sUsage: sm_chudpos <x> <y>. Default: 0.16 0.09", "{green}", "{gold}");
+			CReplyToCommand(client, "%s[ConsMgrs] %sUsage: sm_chudpos <x> <y>. Default: 0.16 0.09", "{green}", "{orange}");
 			return Plugin_Handled;
         }
 
@@ -323,7 +323,7 @@ Action ClientCommands_CHudPosition(int client, int args)
             CPrintToChat(client, "%s[ConsMgrs] %sInvail values are found. Change the value and try again.", "{green}", "{darkred}");
             return Plugin_Handled;
         }
-        CPrintToChat(client, "%s[ConsMgrs] %sHud position is saved.", "{green}", "{gold}");
+        CPrintToChat(client, "%s[ConsMgrs] %sHud position is saved.", "{green}", "{orange}");
     }
     return Plugin_Handled;
 }
@@ -334,7 +334,7 @@ Action ClientCommands_CHudTimerColor(int client, int args)
     {
         if(GetCmdArgs() != 3)
         {
-			CReplyToCommand(client, "%s[ConsMgrs] %sUsage: sm_chudcolor <R> <G> <B>. Default: 255 0 0", "{green}", "{gold}");
+			CReplyToCommand(client, "%s[ConsMgrs] %sUsage: sm_chudcolor <R> <G> <B>. Default: 255 0 0", "{green}", "{orange}");
 			return Plugin_Handled;
         }
 
@@ -365,7 +365,7 @@ Action ClientCommands_CHudTimerColor(int client, int args)
             CPrintToChat(client, "%s[ConsMgrs] %sInvail values are found. Change the value and try again.", "{green}", "{darkred}");
             return Plugin_Handled;
         }
-        CPrintToChat(client, "%s[ConsMgrs] %sTimer color is saved.", "{green}", "{gold}");
+        CPrintToChat(client, "%s[ConsMgrs] %sTimer color is saved.", "{green}", "{orange}");
     }
     return Plugin_Handled;
 }

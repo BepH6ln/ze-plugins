@@ -56,7 +56,7 @@ stock void GenerateInstructorHint(const char[] console, int phrase, int color[3]
             DispatchSpawn(entity);
             for(int i = 0; i <= MaxClients; i++)
             {
-                if(IsValidClient(i) && clientSettings[i].isEnabledInstructor) AcceptEntityInput(entity, "ShowHint", -1, -1, i);
+                if(IsValidClient(i) && clientSettings[i].isEnabledInstructor) AcceptEntityInput(entity, "ShowHint", i, i);
             }
         }
     }

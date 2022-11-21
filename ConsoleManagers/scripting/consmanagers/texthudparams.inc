@@ -48,7 +48,11 @@ stock void ImportTextHudParameters(const char[] console, int phrase)
             useChannel[phrase] = FindAvailableChannel();
             RefreshChannelStatusBegins(useChannel[phrase], phrase);
 
-            if(!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0) CreateTimer(7.0, RefreshChannelStatusEnds, phrase);
+            if(!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0)
+            {
+                float initChannelStatus = configsDetail[phrase].holdtime + 6.0;
+                CreateTimer(initChannelStatus, RefreshChannelStatusEnds, phrase);
+            }
             ExportTextHudParameters(console, phrase, configsDetail[phrase].RGBsColor, false);
         }
     }
@@ -74,7 +78,7 @@ void RefreshChannelStatusBegins(int channel, int phrase)
     if(FindValueInArray(replaceableChannel, channel) != -1) RemoveFromArray(replaceableChannel, FindValueInArray(replaceableChannel, channel));
 
     isAvailableChannel[channel] = false;
-    if(!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0) PushArrayCell(replaceableChannel, channel);
+    if((!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0) && configsDetail[phrase].holdtime <= 1.0) PushArrayCell(replaceableChannel, channel);
 }
 
 public Action RefreshChannelStatusEnds(Handle timer, int phrase)

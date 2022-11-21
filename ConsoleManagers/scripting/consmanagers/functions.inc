@@ -27,6 +27,7 @@ enum struct classConfigFileDetail
 enum struct classClientSetting
 {
     int     language;
+    bool    isEnabledInstructor;
     int     displayStyle;
     float   hudPosition[2];
     bool    isEnabledColorSync;

@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_TIMERCOUNTDOWN
-
 static int timerCountdown[MAXPHRASE][2];
 
 stock void SaveConsoleParameters(int phrase)
@@ -59,7 +57,7 @@ stock bool HasTrigInitialized(int phrase)
 {
     for(int i = phrase; i < MAXPHRASE; i++)
     {
-        if(importConsole[i][0] != 0 && StrEqual(configsDetail[phrase].trigInitConsole, importConsole[i])) return true;
+        if(inputConsoles[i][0] != 0 && StrEqual(configsDetail[phrase].trigInitConsole, inputConsoles[i])) return true;
     }
     return false;
 }

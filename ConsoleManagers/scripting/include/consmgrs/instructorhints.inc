@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_INSTRUCTORHINT
-
 stock void GenerateInstructorHint(const char[] console, int phrase, int color[3], bool isTimerWithinFive)
 {
     if(!StrEqual(console, ""))

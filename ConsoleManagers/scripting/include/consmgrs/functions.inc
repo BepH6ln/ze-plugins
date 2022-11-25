@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_FUNCTIONS
-
 enum struct classConfigFileDetail
 {
     char    consoleEN[256];         // "en"

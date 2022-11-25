@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_CENTERHUDPARAMS
-
 static char consoleHTMLtag[MAXPHRASE][480];
 
 stock void ImportCenterHudParameters(const char[] console, int phrase)
@@ -120,7 +118,7 @@ stock void PrepareExportCenterHud()
 {
     for(int i = 0; i < MAXPHRASE; i++)
     {
-        if(StrEqual(importConsole[i], ""))
+        if(StrEqual(inputConsoles[i], ""))
         {
             for(int j = 0; j <= MaxClients; j++)
             {

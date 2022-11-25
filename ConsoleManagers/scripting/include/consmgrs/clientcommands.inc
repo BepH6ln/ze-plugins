@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_CLIENTCOMMANDS
-
 public void ClientCommands_OnPluginStart()
 {
     RegConsoleCmd("sm_chud", OpenConsManagersClientMenu);
@@ -147,12 +145,12 @@ int hudposMenuHandle(Menu menu, MenuAction action, int client, int item)
             menu.GetItem(item, menuItem, sizeof(menuItem));
 
             if(StrEqual(menuItem, "MOVERIGHT") && clientSettings[client].hudPosition[0] > 0.95) return ITEMDRAW_DISABLED;
-            else if(StrEqual(menuItem, "MOVELEFT") && clientSettings[client].hudPosition[0] < 0.05) return ITEMDRAW_DISABLED;
-            else if(StrEqual(menuItem, "MOVEUP") && clientSettings[client].hudPosition[1] < 0.05) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVELEFT") && clientSettings[client].hudPosition[0] == -1.0) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVEUP") && clientSettings[client].hudPosition[1] == -1.0) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "MOVEDOWN") && clientSettings[client].hudPosition[1] > 0.86) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "MOVERIGHTBIT") && clientSettings[client].hudPosition[0] > 0.99) return ITEMDRAW_DISABLED;
-            else if(StrEqual(menuItem, "MOVELEFTBIT") && clientSettings[client].hudPosition[0] < 0.01) return ITEMDRAW_DISABLED;
-            else if(StrEqual(menuItem, "MOVEUPBIT") && clientSettings[client].hudPosition[1] < 0.01) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVELEFTBIT") && clientSettings[client].hudPosition[0] == -1.0) return ITEMDRAW_DISABLED;
+            else if(StrEqual(menuItem, "MOVEUPBIT") && clientSettings[client].hudPosition[1] == -1.0) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "MOVEDOWNBIT") && clientSettings[client].hudPosition[1] > 0.9) return ITEMDRAW_DISABLED;
             else if(StrEqual(menuItem, "DISABLED")) return ITEMDRAW_DISABLED;
             else return ITEMDRAW_DEFAULT;
@@ -252,14 +250,46 @@ stock bool ClientCookieHudPos(int client, int iteminfo)
 
         switch(iteminfo)
         {
-            case 1: clientSettings[client].hudPosition[0] = oldHudPosX + 0.05;
-            case 2: clientSettings[client].hudPosition[0] = oldHudPosX - 0.05;
-            case 3: clientSettings[client].hudPosition[1] = oldHudPosY - 0.05;
-            case 4: clientSettings[client].hudPosition[1] = oldHudPosY + 0.05;
-            case 5: clientSettings[client].hudPosition[0] = oldHudPosX + 0.01;
-            case 6: clientSettings[client].hudPosition[0] = oldHudPosX - 0.01;
-            case 7: clientSettings[client].hudPosition[1] = oldHudPosY - 0.01;
-            case 8: clientSettings[client].hudPosition[1] = oldHudPosY + 0.01;
+            case 1:
+            {
+                if(oldHudPosX == -1) clientSettings[client].hudPosition[0] = 0.05;
+                else clientSettings[client].hudPosition[0] = oldHudPosX + 0.05;
+            }
+            case 2:
+            {
+                if(oldHudPosX < 0.05) clientSettings[client].hudPosition[0] = -1.0;
+                else clientSettings[client].hudPosition[0] = oldHudPosX - 0.05;
+            }
+            case 3:
+            {
+                if(oldHudPosY < 0.05) clientSettings[client].hudPosition[1] = -1.0;
+                else clientSettings[client].hudPosition[1] = oldHudPosY - 0.05;
+            }
+            case 4:
+            {
+                if(oldHudPosY == -1) clientSettings[client].hudPosition[1] = 0.05;
+                else clientSettings[client].hudPosition[1] = oldHudPosY + 0.05;
+            }
+            case 5:
+            {
+                if(oldHudPosX == -1) clientSettings[client].hudPosition[0] = 0.01;
+                else clientSettings[client].hudPosition[0] = oldHudPosX + 0.01;
+            }
+            case 6:
+            {
+                if(oldHudPosX < 0.01) clientSettings[client].hudPosition[0] = -1.0;
+                else clientSettings[client].hudPosition[0] = oldHudPosX - 0.01;
+            }
+            case 7:
+            {
+                if(oldHudPosY < 0.01) clientSettings[client].hudPosition[1] = -1.0;
+                else clientSettings[client].hudPosition[1] = oldHudPosY - 0.01;
+            }
+            case 8:
+            {
+                if(oldHudPosY == -1) clientSettings[client].hudPosition[1] = 0.01;
+                else clientSettings[client].hudPosition[1] = oldHudPosY + 0.01;
+            }
         }
 
         Format(newHudPosValue, sizeof(newHudPosValue), "%f/%f", clientSettings[client].hudPosition[0], clientSettings[client].hudPosition[1]);

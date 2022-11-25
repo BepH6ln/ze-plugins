@@ -19,22 +19,22 @@ public Plugin myinfo =
     name        = "ConsoleManagers",
     author      = "Beppu",
     description = "Better console syntaxes and additional commands.", // Special thanks to Lupercalia[JP].
-    version     = "2.4beta",
+    version     = "3.0beta",
     url         = "https://github.com/BepH6ln"
 };
 
-char importConsole[MAXPHRASE][256];
+char inputConsoles[MAXPHRASE][256];
 
-#include "consmanagers/functions.inc"
-#include "consmanagers/applyconfigs.inc"
-#include "consmanagers/clientcookies.inc"
-#include "consmanagers/clientcommands.inc"
-#include "consmanagers/timemanager.inc"
-#include "consmanagers/timercountdown.inc"
-#include "consmanagers/texthudparams.inc"
-#include "consmanagers/colorconverter.inc"
-#include "consmanagers/centerhudparams.inc"
-#include "consmanagers/instructorhints.inc"
+#include "consmgrs/functions.inc"
+#include "consmgrs/applyconfigs.inc"
+#include "consmgrs/clientcookies.inc"
+#include "consmgrs/clientcommands.inc"
+#include "consmgrs/timemanager.inc"
+#include "consmgrs/timercountdown.inc"
+#include "consmgrs/texthudparams.inc"
+#include "consmgrs/colorconverter.inc"
+#include "consmgrs/centerhudparams.inc"
+#include "consmgrs/instructorhints.inc"
 
 public void OnPluginStart()
 {
@@ -54,26 +54,26 @@ void OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 
 void OnRoundEnd(Event event, const char[] name, bool dontBroadcast)
 {
-    InitializePlugin();
+    EraseData();
 }
 
 public void OnMapEnd()
 {
-    InitializePlugin();
+    EraseData();
 }
 
 public void OnPluginEnd()
 {
-    InitializePlugin();
+    EraseData();
 }
 
-void InitializePlugin()
+void EraseData()
 {
-    if(kvsConsole) delete kvsConsole;
+    if(kvsConsoles) delete kvsConsoles;
 
     for(int i = 0; i < MAXPHRASE; i++)
     {
-        if(!StrEqual(importConsole[i], "")) importConsole[i][0] = '\0';
+        if(!StrEqual(inputConsoles[i], "")) inputConsoles[i][0] = '\0';
     }
 }
 
@@ -83,18 +83,18 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
     {
         for(int i = 0; i < MAXPHRASE; i++)
         {
-            if(StrEqual(importConsole[i], ""))
+            if(StrEqual(inputConsoles[i], ""))
             {
-                strcopy(importConsole[i], sizeof(importConsole[]), sArgs);
-                ReadConfigsFile(importConsole[i], i);
+                strcopy(inputConsoles[i], sizeof(inputConsoles[]), sArgs);
+                ReadConfigsFile(inputConsoles[i], i);
 
                 char console[256];
                 console = AdaptClientLanguage(i);
 
                 CreateNewSyntaxConsole(console, i);
-                ExtractMultipliedConsole(importConsole[i], i);
+                ExtractMultipliedConsole(inputConsoles[i], i);
 
-                if(!StrEqual(importConsole[i], ""))
+                if(!StrEqual(inputConsoles[i], ""))
                 {
                     if(configsDetail[i].trigtimer > 0 && configsDetail[i].isEnabledCountdown) SaveConsoleParameters(i);
 
@@ -112,7 +112,7 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
 
 void CreateNewSyntaxConsole(const char[] console, int phrase)
 {
-    char exportConsole[280];
+    char outputConsoles[280];
 
     if(configsDetail[phrase].trigtimer > 0)
     {
@@ -121,13 +121,13 @@ void CreateNewSyntaxConsole(const char[] console, int phrase)
         int minutes         = RoundToFloor(tempMinutes);
         int seconds         = timeTriggerEnds - minutes * 60;
 
-        Format(exportConsole, sizeof(exportConsole), "%s%s %s- @ %i:%s%i", "{lime}", console, "{red}", minutes, (seconds < 10 ? "0":""), seconds);
+        Format(outputConsoles, sizeof(outputConsoles), "%s%s %s- @ %i:%s%i", "{lime}", console, "{red}", minutes, (seconds < 10 ? "0":""), seconds);
     }
-    else Format(exportConsole, sizeof(exportConsole), "%s%s", "{lime}", console);
+    else Format(outputConsoles, sizeof(outputConsoles), "%s%s", "{lime}", console);
 
     for(int i = 0; i <= MaxClients; i++)
     {
-        if(IsValidClient(i)) CPrintToChat(i, "Console: %s", exportConsole);
+        if(IsValidClient(i)) CPrintToChat(i, "Console: %s", outputConsoles);
     }
 }
 

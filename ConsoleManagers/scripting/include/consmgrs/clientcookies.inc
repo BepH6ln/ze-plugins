@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_CLIENTCOOKIES
-
 Handle  selectLanguage          = null,
         instructorEnabled       = null,
         toggleDisplayStyle      = null,

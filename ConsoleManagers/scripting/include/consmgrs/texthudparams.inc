@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_TEXTHUDPARAMS
-
 #include <adt_array>
 
 ConVar textHudFirstChannel;
@@ -50,7 +48,7 @@ stock void ImportTextHudParameters(const char[] console, int phrase)
 
             if(!configsDetail[phrase].isEnabledCountdown || configsDetail[phrase].trigtimer <= 0)
             {
-                float initChannelStatus = configsDetail[phrase].holdtime + 6.0;
+                float initChannelStatus = configsDetail[phrase].holdtime + 6.1;
                 CreateTimer(initChannelStatus, RefreshChannelStatusEnds, phrase);
             }
             ExportTextHudParameters(console, phrase, configsDetail[phrase].RGBsColor, false);

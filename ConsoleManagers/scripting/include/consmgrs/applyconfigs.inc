@@ -1,40 +1,38 @@
-#define CONSOLEMANAGERS_APPLYCONFIGS
-
-KeyValues               kvsConsole;
+KeyValues               kvsConsoles;
 classConfigFileDetail   configsDetail[MAXPHRASE];
 
 stock void LoadConfigsFile()
 {
-    if(kvsConsole) delete kvsConsole;
+    if(kvsConsoles) delete kvsConsoles;
 
-    char currentMapName[64], configFullPath[PLATFORM_MAX_PATH];
-    GetCurrentMap(currentMapName, sizeof(currentMapName));
-    FormatEx(configFullPath, sizeof(configFullPath), "cfg/sourcemod/consolemanagers/%s.txt", currentMapName);
+    char stringMapName[64], configFullPath[PLATFORM_MAX_PATH];
+    GetCurrentMap(stringMapName, sizeof(stringMapName));
+    FormatEx(configFullPath, sizeof(configFullPath), "cfg/sourcemod/consolemanagers/%s.txt", stringMapName);
 
-    kvsConsole = CreateKeyValues("console");
+    kvsConsoles = CreateKeyValues("consoles");
     if(FileExists(configFullPath))
     {
-        FileToKeyValues(kvsConsole, configFullPath);
+        FileToKeyValues(kvsConsoles, configFullPath);
         CPrintToChatAll("%s[ConsMgrs] %sThe current map is supported by ConsoleManagers.", "{green}", "{gold}");
     }
 }
 
 stock void ReadConfigsFile(const char[] console, int phrase)
 {
-    if(!kvsConsole) LoadConfigsFile();
+    if(!kvsConsoles) LoadConfigsFile();
 
-    kvsConsole.Rewind();
-    kvsConsole.JumpToKey(console);
+    kvsConsoles.Rewind();
+    kvsConsoles.JumpToKey(console);
 
     char tempBuffer[64];
 
-    kvsConsole.GetString("en", configsDetail[phrase].consoleEN, sizeof(configsDetail[].consoleEN), console);
-    kvsConsole.GetString("jp", configsDetail[phrase].consoleJP, sizeof(configsDetail[].consoleJP), console);
-    kvsConsole.GetString("chi", configsDetail[phrase].consoleCHI, sizeof(configsDetail[].consoleCHI), console);
-    kvsConsole.GetString("zho", configsDetail[phrase].consoleZHO, sizeof(configsDetail[].consoleZHO), console);
-    kvsConsole.GetString("kr", configsDetail[phrase].consoleKR, sizeof(configsDetail[].consoleKR), console);
+    kvsConsoles.GetString("en", configsDetail[phrase].consoleEN, sizeof(configsDetail[].consoleEN), console);
+    kvsConsoles.GetString("jp", configsDetail[phrase].consoleJP, sizeof(configsDetail[].consoleJP), console);
+    kvsConsoles.GetString("chi", configsDetail[phrase].consoleCHI, sizeof(configsDetail[].consoleCHI), console);
+    kvsConsoles.GetString("zho", configsDetail[phrase].consoleZHO, sizeof(configsDetail[].consoleZHO), console);
+    kvsConsoles.GetString("kr", configsDetail[phrase].consoleKR, sizeof(configsDetail[].consoleKR), console);
 
-    kvsConsole.GetString("color", tempBuffer, sizeof(tempBuffer), "{lightgreen}")
+    kvsConsoles.GetString("color", tempBuffer, sizeof(tempBuffer), "{lightgreen}")
     if(StrEqual(tempBuffer, "{default}")){configsDetail[phrase].RGBsColor[0] = 255; configsDetail[phrase].RGBsColor[1] = 255; configsDetail[phrase].RGBsColor[2] = 255;}
     else if(StrEqual(tempBuffer, "{red}")){configsDetail[phrase].RGBsColor[0] = 255; configsDetail[phrase].RGBsColor[1] = 64; configsDetail[phrase].RGBsColor[2] = 64;}
     else if(StrEqual(tempBuffer, "{lightred}")){configsDetail[phrase].RGBsColor[0] = 230; configsDetail[phrase].RGBsColor[1] = 76; configsDetail[phrase].RGBsColor[2] = 76;}
@@ -54,35 +52,35 @@ stock void ReadConfigsFile(const char[] console, int phrase)
     else if(tempBuffer[0] == '#' && strlen(tempBuffer) == 7) ConvertHTMLToColor(tempBuffer, phrase);
     else {configsDetail[phrase].RGBsColor[0] = 190; configsDetail[phrase].RGBsColor[1] = 255; configsDetail[phrase].RGBsColor[2] = 144;}
 
-    configsDetail[phrase].trigtimer = kvsConsole.GetNum("timer", -999);
+    configsDetail[phrase].trigtimer = kvsConsoles.GetNum("timer", -2147483648);
 
-    kvsConsole.GetString("countdown", tempBuffer, sizeof(tempBuffer), "false");
+    kvsConsoles.GetString("countdown", tempBuffer, sizeof(tempBuffer), "false");
     configsDetail[phrase].isEnabledCountdown = StrEqual(tempBuffer, "true");
 
-    kvsConsole.GetString("showtext", tempBuffer, sizeof(tempBuffer), "true");
+    kvsConsoles.GetString("showtext", tempBuffer, sizeof(tempBuffer), "true");
     configsDetail[phrase].isEnabledTextHud = StrEqual(tempBuffer, "true");
 
-    kvsConsole.GetString("showhud", tempBuffer, sizeof(tempBuffer), "true");
+    kvsConsoles.GetString("showhud", tempBuffer, sizeof(tempBuffer), "true");
     configsDetail[phrase].isEnabledCenterHud = StrEqual(tempBuffer, "true");
 
-    configsDetail[phrase].outputTimes = kvsConsole.GetNum("times", -1);
+    configsDetail[phrase].outputTimes = kvsConsoles.GetNum("times", -1);
 
-    kvsConsole.GetString("initialize", configsDetail[phrase].trigInitConsole, sizeof(configsDetail[].trigInitConsole), "");
+    kvsConsoles.GetString("initialize", configsDetail[phrase].trigInitConsole, sizeof(configsDetail[].trigInitConsole), "");
 
-    configsDetail[phrase].holdtime = kvsConsole.GetFloat("holdtime", 1.0);
+    configsDetail[phrase].holdtime = kvsConsoles.GetFloat("holdtime", 1.0);
 
-    kvsConsole.GetString("instructor", tempBuffer, sizeof(tempBuffer), "false");
+    kvsConsoles.GetString("instructor", tempBuffer, sizeof(tempBuffer), "false");
     configsDetail[phrase].isEnabledHintHud = StrEqual(tempBuffer, "true");
 
-    kvsConsole.GetString("caption", tempBuffer, sizeof(tempBuffer), "false")
+    kvsConsoles.GetString("caption", tempBuffer, sizeof(tempBuffer), "false")
     configsDetail[phrase].isEnableHintCountdown = StrEqual(tempBuffer, "true");
 
-    kvsConsole.GetString("target", configsDetail[phrase].hintTarget, sizeof(configsDetail[].hintTarget), "");
-    kvsConsole.GetString("icon", configsDetail[phrase].hintIcon, sizeof(configsDetail[].hintIcon), "icon_tip");
-    kvsConsole.GetString("bind", configsDetail[phrase].hintKeyBinds, sizeof(configsDetail[].hintKeyBinds), "");
+    kvsConsoles.GetString("target", configsDetail[phrase].hintTarget, sizeof(configsDetail[].hintTarget), "");
+    kvsConsoles.GetString("icon", configsDetail[phrase].hintIcon, sizeof(configsDetail[].hintIcon), "icon_tip");
+    kvsConsoles.GetString("bind", configsDetail[phrase].hintKeyBinds, sizeof(configsDetail[].hintKeyBinds), "");
 
-    configsDetail[phrase].hintHoldtime = kvsConsole.GetNum("timeout", 5);
-    configsDetail[phrase].hintRange = kvsConsole.GetFloat("range", 0.0);
+    configsDetail[phrase].hintHoldtime = kvsConsoles.GetNum("timeout", 5);
+    configsDetail[phrase].hintRange = kvsConsoles.GetFloat("range", 0.0);
 }
 
 stock void ExtractMultipliedConsole(const char[] console, int phrase)
@@ -90,11 +88,11 @@ stock void ExtractMultipliedConsole(const char[] console, int phrase)
     int equalsConsole = 0;
     for(int i = SubtractNeverNegative(phrase, 10); i <= phrase; i++)
     {
-        if(StrEqual(console, importConsole[i]) && configsDetail[phrase].outputTimes >= 0)
+        if(StrEqual(console, inputConsoles[i]) && configsDetail[phrase].outputTimes >= 0)
         {
             if(equalsConsole >= configsDetail[phrase].outputTimes)
             {
-                importConsole[phrase][0] = '\0';
+                inputConsoles[phrase][0] = '\0';
                 break;
             }
             equalsConsole++;

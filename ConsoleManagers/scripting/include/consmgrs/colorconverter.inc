@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_COLORCONVERTER
-
 stock char[] ConvertColorToHTML(int color[3])
 {
     char colorHTML[32] = "000000";

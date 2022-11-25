@@ -1,5 +1,3 @@
-#define CONSOLEMANAGERS_TIMERMANAGER
-
 static int timeRoundStart;
 
 void SaveTimeWhenRoundStart()
